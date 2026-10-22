@@ -1162,40 +1162,7 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
     return;
   }
 
-  grid.innerHTML = filtered
-    .map((th) => {
-      const isActive = th.id === state.themeId;
-      const land = th.map?.land || th.ui.bg;
-      const water = th.map?.water || "#a8c4c4";
-      const parks = th.map?.parks || land;
-      const roadMajor = th.map?.roads?.major || th.ui.text;
-      const roadMinor = th.map?.roads?.minor_low || roadMajor;
-      const textCol = th.ui.text;
-
-      return `
-        <div class="theme-card ${isActive ? "active" : ""}" data-theme-id="${th.id}">
-          <div class="theme-active-badge">✓</div>
-          <div class="theme-swatch-bar">
-            <div class="theme-swatch-seg" style="background:${land};" title="Land: ${land}"></div>
-            <div class="theme-swatch-seg" style="background:${water};" title="Water: ${water}"></div>
-            <div class="theme-swatch-seg" style="background:${parks};" title="Parks: ${parks}"></div>
-            <div class="theme-swatch-seg" style="background:${roadMajor};" title="Roads: ${roadMajor}"></div>
-            <div class="theme-swatch-seg" style="background:${roadMinor};" title="Roads: ${roadMinor}"></div>
-            <div class="theme-swatch-seg" style="background:${textCol};" title="Text: ${textCol}"></div>
-          </div>
-          <div class="theme-card-info">
-            <span class="theme-card-name">${state.lang === "ar" ? th.arName : th.name}</span>
-            <span class="theme-card-sub">${th.name}</span>
-            <span class="theme-card-desc">${state.lang === "ar" ? th.arDesc : th.description}</span>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  
-  // Stagger index for entrance animation
-  const staggerCount = Math.min(filtered.length, 10);
+  // Staggered entrance animation
   grid.innerHTML = filtered
     .map((th, index) => {
       const isActive = th.id === state.themeId;
@@ -1231,9 +1198,10 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
     })
     .join("");
 
-  // Add keyframes if not already added (only for first render)
-  if (grid.querySelectorAll(".theme-card").length > 0) {
+  // Add keyframes only once (check if already exists)
+  if (!document.getElementById('theme-card-keyframes')) {
     const styleSheet = document.createElement("style");
+    styleSheet.id = 'theme-card-keyframes';
     styleSheet.textContent = `
       @keyframes themeCardIn {
         from {
@@ -1250,11 +1218,6 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
   }
 
   grid.querySelectorAll(".theme-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      const themeId = card.dataset.themeId;
-      switchTheme(themeId);
-    });
-  });grid.querySelectorAll(".theme-card").forEach((card) => {
     card.addEventListener("click", () => {
       const themeId = card.dataset.themeId;
       switchTheme(themeId);
@@ -2126,66 +2089,13 @@ function wireEventListeners() {
   // Enhanced Interactive Animations
   // ==========================================
   
-  // 1. Cursor Trail Effect (optional, for desktop)
-  if (!('ontouchstart' in window)) {
-    const trail = document.createElement('div');
-    trail.className = 'cursor-trail';
-    trail.style.cssText = `
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      mix-blend-mode: screen;
-    `;
-    document.body.appendChild(trail);
-    
-    let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      trail.style.opacity = '0.3';
-    });
-    
-    function animateTrail() {
-      trailX += (mouseX - trailX) * 0.15;
-      trailY += (mouseY - trailY) * 0.15;
-      trail.style.transform = `translate(${trailX - 10}px, ${trailY - 10}px)`;
-      requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
-    
-    document.addEventListener('mouseleave', () => {
-      trail.style.opacity = '0';
-    });
-  }
+  // 1. Cursor Trail Effect - REMOVED for performance
+  // (was causing high CPU usage with requestAnimationFrame)
   
-  // 2. Scroll Reveal for Sections
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
-        entry.target.classList.add('visible');
-      }
-    });
-  }, observerOptions);
-  
-  // Observe section titles
-  document.querySelectorAll('.section-title').forEach(title => {
-    title.style.animationPlayState = 'paused';
-    sectionObserver.observe(title);
-  });
+  // 2. Scroll Reveal for Sections - OPTIMIZED
+  // Using CSS animation-delay instead of IntersectionObserver for better performance
+  // Section titles already have staggered animation-delay in CSS
+  // No IntersectionObserver needed - CSS handles it efficiently
   
   // 3. Button Ripple Effect Enhancement
   document.querySelectorAll('.btn, .tool-btn, .tab-btn').forEach(btn => {
@@ -2217,41 +2127,24 @@ function wireEventListeners() {
     });
   });
   
-  // Add ripple keyframes
-  const rippleStyle = document.createElement('style');
-  rippleStyle.textContent = `
-    @keyframes rippleEffect {
-      to {
-        transform: scale(2.5);
-        opacity: 0;
+  // Add ripple keyframes only once
+  if (!document.getElementById('ripple-keyframes')) {
+    const rippleStyle = document.createElement('style');
+    rippleStyle.id = 'ripple-keyframes';
+    rippleStyle.textContent = `
+      @keyframes rippleEffect {
+        to {
+          transform: scale(2.5);
+          opacity: 0;
+        }
       }
-    }
-  `;
-  document.head.appendChild(rippleStyle);
-  
-  // 4. Parallax Effect on Map Overlay (subtle)
-  let parallaxActive = false;
-  const mapWrap = document.getElementById('posterMapWrap');
-  if (mapWrap) {
-    mapWrap.addEventListener('mousemove', (e) => {
-      if (!parallaxActive) return;
-      const rect = mapWrap.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      
-      const overlay = document.getElementById('mapOverlay');
-      if (overlay) {
-        overlay.style.transform = `translate(${x * 5}px, ${y * 5}px)`;
-      }
-    });
-    
-    mapWrap.addEventListener('mouseenter', () => { parallaxActive = true; });
-    mapWrap.addEventListener('mouseleave', () => { 
-      parallaxActive = false;
-      const overlay = document.getElementById('mapOverlay');
-      if (overlay) overlay.style.transform = 'translate(0, 0)';
-    });
+    `;
+    document.head.appendChild(rippleStyle);
   }
+  
+  // 4. Parallax Effect - DISABLED for performance (was causing map lag)
+  // const mapWrap = document.getElementById('posterMapWrap');
+  // if (mapWrap) { ... }
   
   // 5. Keyboard Navigation Enhancement
   document.addEventListener('keydown', (e) => {
@@ -2301,16 +2194,19 @@ function wireEventListeners() {
     });
   });
   
-  // Add color pulse keyframes
-  const colorPulseStyle = document.createElement('style');
-  colorPulseStyle.textContent = `
-    @keyframes colorPulse {
-      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.6); }
-      50% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
-    }
-  `;
-  document.head.appendChild(colorPulseStyle);
+  // Add color pulse keyframes only once
+  if (!document.getElementById('color-pulse-keyframes')) {
+    const colorPulseStyle = document.createElement('style');
+    colorPulseStyle.id = 'color-pulse-keyframes';
+    colorPulseStyle.textContent = `
+      @keyframes colorPulse {
+        0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.6); }
+        50% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+      }
+    `;
+    document.head.appendChild(colorPulseStyle);
+  }
   
   // 8. Smooth Scroll for Anchor Links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2349,17 +2245,20 @@ function wireEventListeners() {
     return originalSwitchTheme.apply(this, arguments);
   };
   
-  // Add celebration keyframes
-  const celebrateStyle = document.createElement('style');
-  celebrateStyle.textContent = `
-    @keyframes themeSelectCelebrate {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 var(--color-accent); }
-      25% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(79, 70, 229, 0.5); }
-      50% { transform: scale(0.98); box-shadow: 0 0 0 5px var(--color-accent); }
-      100% { transform: scale(1); box-shadow: 0 0 0 3px var(--color-accent); }
-    }
-  `;
-  document.head.appendChild(celebrateStyle);
+  // Add celebration keyframes only once
+  if (!document.getElementById('celebrate-keyframes')) {
+    const celebrateStyle = document.createElement('style');
+    celebrateStyle.id = 'celebrate-keyframes';
+    celebrateStyle.textContent = `
+      @keyframes themeSelectCelebrate {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 var(--color-accent); }
+        25% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(79, 70, 229, 0.5); }
+        50% { transform: scale(0.98); box-shadow: 0 0 0 5px var(--color-accent); }
+        100% { transform: scale(1); box-shadow: 0 0 0 3px var(--color-accent); }
+      }
+    `;
+    document.head.appendChild(celebrateStyle);
+  }
 
 
 function initApp() {
