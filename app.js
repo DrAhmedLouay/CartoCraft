@@ -148,741 +148,11 @@ const I18N = {
 // ==========================================
 // 2. Curated Official CartoCraft Themes (35 Themes)
 // ==========================================
-const THEMES = [
-  {
-    "id": "carrara",
-    "name": "Carrara",
-    "arName": "كارارا الإيطالي",
-    "category": "light",
-    "description": "White marble — pale stone with soft charcoal veining",
-    "arDesc": "رخام أبيض — حجر شاحب ناصع مع تعريقات فحمية رقيقة",
-    "ui": {
-      "bg": "#F4F1EA",
-      "text": "#2E2A26"
-    },
-    "map": {
-      "land": "#F4F1EA",
-      "water": "#C7CDD0",
-      "parks": "#E6E3D8",
-      "buildings": "#E0DACD",
-      "roads": "#3A3631"
-    },
-    "filter": "contrast(1.05) brightness(0.98)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "blush",
-    "name": "Blush",
-    "arName": "وردي ناعم (Blush)",
-    "category": "light",
-    "description": "Dusty rose on warm white",
-    "arDesc": "درجات الورد الترابي المغبر على خلفية بيضاء دافئة",
-    "ui": {
-      "bg": "#F9F1F0",
-      "text": "#7A4351"
-    },
-    "map": {
-      "land": "#F9F1F0",
-      "water": "#E0BFC4",
-      "parks": "#EDD6D6",
-      "buildings": "#E9CCCE",
-      "roads": "#9C5566"
-    },
-    "filter": "sepia(0.3) hue-rotate(300deg) saturate(1.2)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "sandstone",
-    "name": "Sandstone",
-    "arName": "حجر رملي (Sandstone)",
-    "category": "earth",
-    "description": "Warm beige with muted brown lines",
-    "arDesc": "بيج رملي دافئ مع خطوط بنية كلاسيكية هادئة",
-    "ui": {
-      "bg": "#F1E9DB",
-      "text": "#6B5436"
-    },
-    "map": {
-      "land": "#F1E9DB",
-      "water": "#CDBC9C",
-      "parks": "#E0D2B8",
-      "buildings": "#DCCBAB",
-      "roads": "#8A6E45"
-    },
-    "filter": "sepia(0.5) saturate(1.1) brightness(0.96)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "heatwave",
-    "name": "Heatwave",
-    "arName": "موجة حرارية (Heatwave)",
-    "category": "dark",
-    "description": "Charred dark base with glowing orange roads and sunlit highlights.",
-    "arDesc": "قاعدة داكنة متفحمة مع شوارع برتقالية متوهجة",
-    "ui": {
-      "bg": "#1C0E09",
-      "text": "#FFD78A"
-    },
-    "map": {
-      "land": "#1C0E09",
-      "water": "#2C140C",
-      "parks": "#381A10",
-      "buildings": "#D2A55E",
-      "roads": "#FF5F1F"
-    },
-    "filter": "invert(1) hue-rotate(180deg) saturate(2.4) contrast(1.3)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "ruby",
-    "name": "Ruby",
-    "arName": "ياقوتي ملكي (Ruby)",
-    "category": "dark",
-    "description": "Garnet-inspired palette with rich reds over deep plum city blocks.",
-    "arDesc": "لوحة عقيقية بأحمر غني فوق كتل المدن العنابية",
-    "ui": {
-      "bg": "#1A070F",
-      "text": "#F6D7BC"
-    },
-    "map": {
-      "land": "#1A070F",
-      "water": "#2A0D17",
-      "parks": "#351021",
-      "buildings": "#EE8EA4",
-      "roads": "#C0103C"
-    },
-    "filter": "invert(1) hue-rotate(290deg) saturate(2.2) brightness(0.85)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "sage",
-    "name": "Sage",
-    "arName": "مرمر نباتي (Sage)",
-    "category": "earth",
-    "description": "Muted botanical tones with cool green roads and gentle contrast.",
-    "arDesc": "نغمات نباتية رقيقة مع طرق خضراء هادئة وتباين ناعم",
-    "ui": {
-      "bg": "#DDE8DD",
-      "text": "#2D4739"
-    },
-    "map": {
-      "land": "#DDE8DD",
-      "water": "#C5D4CB",
-      "parks": "#D3DFD7",
-      "buildings": "#8BAD9B",
-      "roads": "#3F624F"
-    },
-    "filter": "hue-rotate(65deg) saturate(1.2) brightness(0.97)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "rustic",
-    "name": "Rustic",
-    "arName": "ريفي عتيق (Rustic)",
-    "category": "earth",
-    "description": "Earthy paper-like base with wood and clay road tones.",
-    "arDesc": "قاعدة ورقية أرضية مع ألوان الخشب والطين",
-    "ui": {
-      "bg": "#DFD5C8",
-      "text": "#44362C"
-    },
-    "map": {
-      "land": "#DFD5C8",
-      "water": "#C4B8A8",
-      "parks": "#D2C6B7",
-      "buildings": "#9E7A62",
-      "roads": "#563A2A"
-    },
-    "filter": "sepia(0.4) saturate(0.9) brightness(0.95)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "midnight_blue",
-    "name": "Midnight Blue",
-    "arName": "أزرق منتصف الليل (Midnight)",
-    "category": "dark",
-    "description": "Deep navy background with gold/copper roads - luxury atlas aesthetic",
-    "arDesc": "أزرق كحلي عميق مع شوارع ذهبية ونحاسية فخمة",
-    "ui": {
-      "bg": "#0A1628",
-      "text": "#D6B352"
-    },
-    "map": {
-      "land": "#0A1628",
-      "water": "#061020",
-      "parks": "#0F2235",
-      "buildings": "#6E5A45",
-      "roads": "#C99C37"
-    },
-    "filter": "invert(1) hue-rotate(195deg) brightness(0.82) contrast(1.28)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "neon",
-    "name": "Neon",
-    "arName": "سايبر نيون (Neon)",
-    "category": "vibrant",
-    "description": "Neon-drenched high-contrast palette with magenta and cyan accents.",
-    "arDesc": "تباين عالٍ غامر مع لمسات سماوية ووردية متوهجة",
-    "ui": {
-      "bg": "#0B0F1A",
-      "text": "#00F5FF"
-    },
-    "map": {
-      "land": "#0B0F1A",
-      "water": "#001433",
-      "parks": "#1A0B2A",
-      "buildings": "#FF2D95",
-      "roads": "#FF2D95"
-    },
-    "filter": "invert(1) hue-rotate(260deg) saturate(2.8) brightness(1.1)",
-    "mix": "screen",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "terracotta",
-    "name": "Terracotta",
-    "arName": "صلصال متوسطي (Terracotta)",
-    "category": "earth",
-    "description": "Mediterranean warmth - burnt orange and clay tones on cream",
-    "arDesc": "دفء البحر الأبيض المتوسط — برتقالي محروق على قشدي",
-    "ui": {
-      "bg": "#F5EDE4",
-      "text": "#8B4513"
-    },
-    "map": {
-      "land": "#F5EDE4",
-      "water": "#A8C4C4",
-      "parks": "#E8E0D0",
-      "buildings": "#D9A08A",
-      "roads": "#A0522D"
-    },
-    "filter": "sepia(0.6) hue-rotate(-25deg) saturate(1.5) contrast(1.08)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "blueprint",
-    "name": "Blueprint",
-    "arName": "مخطط هندسي (Blueprint)",
-    "category": "vibrant",
-    "description": "Classic architectural blueprint - technical drawing aesthetic",
-    "arDesc": "مخطط معماري كلاسيكي — جمالية الرسم الهندسي",
-    "ui": {
-      "bg": "#1A3A5C",
-      "text": "#E8F4FF"
-    },
-    "map": {
-      "land": "#1A3A5C",
-      "water": "#0E2740",
-      "parks": "#1F466F",
-      "buildings": "#6EA4CC",
-      "roads": "#D8EEFA"
-    },
-    "filter": "invert(1) hue-rotate(170deg) saturate(2.4) contrast(1.2)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "contrast_zones",
-    "name": "Contrast",
-    "arName": "أبيض وأسود عالي التباين",
-    "category": "light",
-    "description": "Strong contrast showing urban density - darker in center, lighter at edges",
-    "arDesc": "تباين قوي يبرز الكثافة الحضرية وشبكة الطرق",
-    "ui": {
-      "bg": "#FFFFFF",
-      "text": "#111111"
-    },
-    "map": {
-      "land": "#FFFFFF",
-      "water": "#B0B0B0",
-      "parks": "#ECECEC",
-      "buildings": "#6C6C6C",
-      "roads": "#1A1A1A"
-    },
-    "filter": "grayscale(1) contrast(1.5) brightness(0.98)",
-    "mix": "normal",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "copper_patina",
-    "name": "Copper Patina",
-    "arName": "أكسيد النحاس (Patina)",
-    "category": "vibrant",
-    "description": "Oxidized copper aesthetic - teal-green patina with copper accents",
-    "arDesc": "جمالية النحاس المؤكسد — تركواز بترولي مع نحاس هادئ",
-    "ui": {
-      "bg": "#E8F0F0",
-      "text": "#2A5A5A"
-    },
-    "map": {
-      "land": "#E8F0F0",
-      "water": "#C0D8D8",
-      "parks": "#D8E8E0",
-      "buildings": "#8AB6B6",
-      "roads": "#B87333"
-    },
-    "filter": "hue-rotate(130deg) saturate(1.4) brightness(0.95)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "emerald",
-    "name": "Emerald City",
-    "arName": "مدينة الزمرد (Emerald City)",
-    "category": "dark",
-    "description": "Lush dark green aesthetic with mint accents",
-    "arDesc": "أخضر زمردي عميق وفاخر مع لمسات نعناعية رقيقة",
-    "ui": {
-      "bg": "#062C22",
-      "text": "#E3F9F1"
-    },
-    "map": {
-      "land": "#062C22",
-      "water": "#0D4536",
-      "parks": "#0F523E",
-      "buildings": "#1A785B",
-      "roads": "#4ADEB0"
-    },
-    "filter": "invert(1) hue-rotate(75deg) saturate(2) brightness(0.8)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "forest",
-    "name": "Forest",
-    "arName": "غابات عريقة (Forest)",
-    "category": "earth",
-    "description": "Deep greens and sage tones - organic botanical aesthetic",
-    "arDesc": "أخضر غابي عميق ونغمات عشبية نباتية أصيلة",
-    "ui": {
-      "bg": "#F0F4F0",
-      "text": "#2D4A3E"
-    },
-    "map": {
-      "land": "#F0F4F0",
-      "water": "#B8D4D4",
-      "parks": "#D4E8D4",
-      "buildings": "#8AB19A",
-      "roads": "#3A5E4D"
-    },
-    "filter": "hue-rotate(70deg) saturate(1.5) brightness(0.92)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "japanese_ink",
-    "name": "Japanese Ink",
-    "arName": "حبر ياباني (Japanese Ink)",
-    "category": "light",
-    "description": "Traditional ink wash inspired - minimalist with subtle red accent",
-    "arDesc": "مستوحى من فن الحبر سومي-إي — تبسيطي بلمسة حمراء",
-    "ui": {
-      "bg": "#FAF8F5",
-      "text": "#2C2C2C"
-    },
-    "map": {
-      "land": "#FAF8F5",
-      "water": "#E8E4E0",
-      "parks": "#F0EDE8",
-      "buildings": "#959595",
-      "roads": "#8B2500"
-    },
-    "filter": "grayscale(0.9) contrast(1.2) brightness(1.02)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "noir",
-    "name": "Noir",
-    "arName": "نوار أسود نقي (Noir)",
-    "category": "dark",
-    "description": "Pure black background with white/gray roads - modern gallery aesthetic",
-    "arDesc": "أسود نقي فاخر مع شوارع بيضاء ورمادية لمعارض الفن",
-    "ui": {
-      "bg": "#000000",
-      "text": "#FFFFFF"
-    },
-    "map": {
-      "land": "#000000",
-      "water": "#0B0B0B",
-      "parks": "#171717",
-      "buildings": "#6F6F6F",
-      "roads": "#E8E8E8"
-    },
-    "filter": "invert(1) brightness(0.72) contrast(1.45)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "ocean",
-    "name": "Ocean",
-    "arName": "المحيط الأزرق (Ocean)",
-    "category": "vibrant",
-    "description": "Various blues and teals - perfect for coastal cities",
-    "arDesc": "تدرجات زرقاء مائية — مثالية للمدن الساحلية والجزر",
-    "ui": {
-      "bg": "#F0F8FA",
-      "text": "#1A5F7A"
-    },
-    "map": {
-      "land": "#F0F8FA",
-      "water": "#B8D8E8",
-      "parks": "#D8EAE8",
-      "buildings": "#67AED0",
-      "roads": "#14536A"
-    },
-    "filter": "hue-rotate(160deg) saturate(1.5) brightness(0.96)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "pastel_dream",
-    "name": "Pastel Dream",
-    "arName": "حلم الباستيل (Pastel Dream)",
-    "category": "light",
-    "description": "Soft muted pastels with dusty blues and mauves - dreamy artistic aesthetic",
-    "arDesc": "باستيل ناعم مع أزرق مغبر وبنفسجي حالم",
-    "ui": {
-      "bg": "#FAF7F2",
-      "text": "#5D5A6D"
-    },
-    "map": {
-      "land": "#FAF7F2",
-      "water": "#D4E4ED",
-      "parks": "#E8EDE4",
-      "buildings": "#CEC3CB",
-      "roads": "#6870A0"
-    },
-    "filter": "hue-rotate(240deg) saturate(0.8) brightness(1.05)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "coral",
-    "name": "Coral",
-    "arName": "شعب مرجانية (Coral)",
-    "category": "vibrant",
-    "description": "Soft ivory base with warm coral roads and muted pink-blue features.",
-    "arDesc": "عاجي ناعم مع طرق مرجانية دافئة ومسطحات وردية",
-    "ui": {
-      "bg": "#F3E1DA",
-      "text": "#6E2F28"
-    },
-    "map": {
-      "land": "#F3E1DA",
-      "water": "#DFC0B5",
-      "parks": "#EACFC6",
-      "buildings": "#E39B89",
-      "roads": "#B9473A"
-    },
-    "filter": "sepia(0.35) hue-rotate(320deg) saturate(1.3) brightness(0.98)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "copper",
-    "name": "Copper",
-    "arName": "نحاسي معدني (Copper)",
-    "category": "earth",
-    "description": "Oxidized cream and copper tones with warm metallic road accents.",
-    "arDesc": "نغمات كريمة ونحاسية مؤكسدة مع لمسات دافئة",
-    "ui": {
-      "bg": "#E1D2C6",
-      "text": "#4E2F22"
-    },
-    "map": {
-      "land": "#E1D2C6",
-      "water": "#CBB5A1",
-      "parks": "#D8C6B5",
-      "buildings": "#C88B72",
-      "roads": "#7C452E"
-    },
-    "filter": "sepia(0.55) hue-rotate(-15deg) saturate(1.3)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "old_navy",
-    "name": "Old Navy",
-    "arName": "البحرية الكلاسيكية (Old Navy)",
-    "category": "dark",
-    "description": "Deep navy map fields with gold-accented typography and roads.",
-    "arDesc": "كحلي داكن فاخر مع تايبوجرافي وطرق ذهبية متألقة",
-    "ui": {
-      "bg": "#061327",
-      "text": "#E2B85C"
-    },
-    "map": {
-      "land": "#061327",
-      "water": "#0B1E3B",
-      "parks": "#0F2240",
-      "buildings": "#2A3F5C",
-      "roads": "#D4A030"
-    },
-    "filter": "invert(1) hue-rotate(200deg) brightness(0.75) contrast(1.35)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "gradient_roads",
-    "name": "Gradient Roads",
-    "arName": "تدرج ناعم (Gradient)",
-    "category": "light",
-    "description": "Smooth gradient from dark center to light edges with subtle features",
-    "arDesc": "تدرج سلس من المركز الداكن نحو الأطراف الفاتحة",
-    "ui": {
-      "bg": "#FFFFFF",
-      "text": "#000000"
-    },
-    "map": {
-      "land": "#FFFFFF",
-      "water": "#D0D0D0",
-      "parks": "#F0F0F0",
-      "buildings": "#505050",
-      "roads": "#111111"
-    },
-    "filter": "grayscale(0.7) contrast(1.3) brightness(1.02)",
-    "mix": "normal",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "monochrome_blue",
-    "name": "Monochrome Blue",
-    "arName": "أزرق أحادي (Mono Blue)",
-    "category": "light",
-    "description": "Single blue color family with varying saturation - clean and cohesive",
-    "arDesc": "عائلة زرقاء متدرجة بنقاء وتناسق بصري استثنائي",
-    "ui": {
-      "bg": "#F5F8FA",
-      "text": "#1A3A5C"
-    },
-    "map": {
-      "land": "#F5F8FA",
-      "water": "#C8DCF0",
-      "parks": "#DDE8F2",
-      "buildings": "#8EB0CC",
-      "roads": "#1A3D6C"
-    },
-    "filter": "hue-rotate(180deg) saturate(1.3) contrast(1.1)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "sunset",
-    "name": "Sunset",
-    "arName": "غروب ذهبي (Sunset)",
-    "category": "vibrant",
-    "description": "Warm oranges and pinks on soft peach - dreamy golden hour aesthetic",
-    "arDesc": "برتقالي ووردي دافئ على خلفية خوخية لساعة الغروب",
-    "ui": {
-      "bg": "#FDF5F0",
-      "text": "#C45C3E"
-    },
-    "map": {
-      "land": "#FDF5F0",
-      "water": "#EDD0C4",
-      "parks": "#F8E8E2",
-      "buildings": "#EAA898",
-      "roads": "#B84830"
-    },
-    "filter": "sepia(0.4) hue-rotate(330deg) saturate(1.6) brightness(1.05)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "autumn",
-    "name": "Autumn",
-    "arName": "خريفي ذهبي (Autumn)",
-    "category": "earth",
-    "description": "Burnt oranges, deep reds, golden yellows - seasonal warmth",
-    "arDesc": "برتقالي محروق وأحمر داكن وأصفر خريفي دافئ",
-    "ui": {
-      "bg": "#FBF7F0",
-      "text": "#8B4513"
-    },
-    "map": {
-      "land": "#FBF7F0",
-      "water": "#D4C8B4",
-      "parks": "#EDE6D8",
-      "buildings": "#C8943C",
-      "roads": "#8B2500"
-    },
-    "filter": "sepia(0.65) hue-rotate(-20deg) saturate(1.7) contrast(1.1)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "warm_beige",
-    "name": "Warm Beige",
-    "arName": "بيج دافئ كلاسيكي (Warm Beige)",
-    "category": "earth",
-    "description": "Earthy warm neutrals with sepia tones - vintage map aesthetic",
-    "arDesc": "ألوان ترابية محايدة بنغمات السيبيا للخرائط القديمة",
-    "ui": {
-      "bg": "#F5F0E8",
-      "text": "#6B5B4F"
-    },
-    "map": {
-      "land": "#F5F0E8",
-      "water": "#D8D0C0",
-      "parks": "#EAE6DC",
-      "buildings": "#BFB09E",
-      "roads": "#6B4828"
-    },
-    "filter": "sepia(0.45) saturate(1.15) brightness(0.97)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "cyberpunk",
-    "name": "Cyberpunk 2077",
-    "arName": "سايبربانك 2077",
-    "category": "vibrant",
-    "description": "Neon cyan and electric yellow on pitch cyber dark",
-    "arDesc": "أصفر نيون وسيان كهربائي على خلفية سايبر داكنة",
-    "ui": { "bg": "#080b11", "text": "#00ffcc" },
-    "map": { "land": "#080b11", "water": "#0f172a", "parks": "#13233a", "buildings": "#1e293b", "roads": "#00ffcc" },
-    "filter": "invert(1) hue-rotate(140deg) saturate(3) brightness(0.9) contrast(1.4)",
-    "mix": "screen",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "nordic_frost",
-    "name": "Nordic Frost",
-    "arName": "صقيع الشمال",
-    "category": "light",
-    "description": "Icy arctic blue and pristine white frost aesthetic",
-    "arDesc": "أزرق قطبي جليدي وأبيض ناصع بجمالية صقيع الشمال",
-    "ui": { "bg": "#eef4f8", "text": "#1b365d" },
-    "map": { "land": "#eef4f8", "water": "#b8d0e5", "parks": "#d4e4f2", "buildings": "#c8d9ed", "roads": "#2a4d7a" },
-    "filter": "hue-rotate(180deg) saturate(0.8) brightness(1.02)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "desert_gold",
-    "name": "Desert Gold",
-    "arName": "ذهب الصحراء",
-    "category": "earth",
-    "description": "Golden sand dunes and warm umber highlights",
-    "arDesc": "رمال ذهبية دافئة ولمسات بني عنبري عتيق",
-    "ui": { "bg": "#f7f1e3", "text": "#8c6747" },
-    "map": { "land": "#f7f1e3", "water": "#d2c2a5", "parks": "#ede4d0", "buildings": "#dfd2bc", "roads": "#6b4f34" },
-    "filter": "sepia(0.55) saturate(1.3) brightness(0.98)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "royal_amethyst",
-    "name": "Royal Amethyst",
-    "arName": "أرجواني ملكي",
-    "category": "dark",
-    "description": "Deep imperial purple with glowing gold and orchid roads",
-    "arDesc": "بنفسجي ملكي عميق مع شوارع متوهجة كالذهب والأوركيد",
-    "ui": { "bg": "#1e1124", "text": "#e0b0ff" },
-    "map": { "land": "#1e1124", "water": "#2d1a38", "parks": "#382346", "buildings": "#4a2d5c", "roads": "#e0b0ff" },
-    "filter": "invert(1) hue-rotate(240deg) saturate(2.5) brightness(0.85) contrast(1.2)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "sunset_velvet",
-    "name": "Sunset Velvet",
-    "arName": "غسق مخملي",
-    "category": "vibrant",
-    "description": "Rich crimson and warm magenta sunset gradients",
-    "arDesc": "قرمزي غني وتدرجات وردية دافئة لساعة الغسق",
-    "ui": { "bg": "#22092c", "text": "#ff758c" },
-    "map": { "land": "#22092c", "water": "#3d134c", "parks": "#4d1961", "buildings": "#5e2075", "roads": "#ff758c" },
-    "filter": "invert(1) hue-rotate(300deg) saturate(2.8) brightness(0.88)",
-    "mix": "screen",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "matte_olive",
-    "name": "Matte Olive",
-    "arName": "زيتوني مطفي",
-    "category": "earth",
-    "description": "Earthy military olive and warm cream minimalism",
-    "arDesc": "أخضر زيتوني عسكري وقشدي دافئ بتبسيطة راقية",
-    "ui": { "bg": "#f0f2ed", "text": "#3f4739" },
-    "map": { "land": "#f0f2ed", "water": "#cdd4c8", "parks": "#e2e8de", "buildings": "#d3dacd", "roads": "#2d3328" },
-    "filter": "sepia(0.3) hue-rotate(80deg) saturate(0.9) brightness(0.98)",
-    "mix": "multiply",
-    "isDark": false,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  },
-  {
-    "id": "tokyo_neon",
-    "name": "Tokyo Night Neon",
-    "arName": "نيون طوكيو الليلي",
-    "category": "vibrant",
-    "description": "Tokyo midnight neon blues and vibrant violet lights",
-    "arDesc": "أزرق ليلي مع إضاءات نيون طوكيو البنفسجية المتألقة",
-    "ui": { "bg": "#1a1b26", "text": "#7aa2f7" },
-    "map": { "land": "#1a1b26", "water": "#24283b", "parks": "#292e42", "buildings": "#414868", "roads": "#bb9af7" },
-    "filter": "invert(1) hue-rotate(210deg) saturate(2.2) brightness(0.85) contrast(1.3)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/positron"
-  },
-  {
-    "id": "espresso_crema",
-    "name": "Espresso Crema",
-    "arName": "إسبريسو كريما",
-    "category": "earth",
-    "description": "Rich espresso brown with warm coffee crema highlights",
-    "arDesc": "بني إسبريسو غني مع درجات كريمة القهوة الدافئة",
-    "ui": { "bg": "#2c221e", "text": "#d4a373" },
-    "map": { "land": "#2c221e", "water": "#3f302b", "parks": "#4d3a34", "buildings": "#5e4740", "roads": "#d4a373" },
-    "filter": "sepia(0.8) saturate(1.4) brightness(0.7) contrast(1.2)",
-    "mix": "multiply",
-    "isDark": true,
-    "styleUrl": "https://tiles.openfreemap.org/styles/liberty"
-  }
-];
+// ==========================================
+// 2. Curated Themes — loaded from themes.js (35 themes)
+//    Official TerraInk palettes + original CartoCraft additions
+// ==========================================
+// THEMES is defined in themes.js (loaded before app.js)
 
 // ==========================================
 // 3. Layouts & Formats
@@ -943,6 +213,7 @@ let state = {
   coordsFormatted: "33.3152° N / 44.3661° E",
   themeId: "midnight_blue",
   tintColor: "#0A1628",
+  tintOpacity: 0,
   showCity: true,
   showCountry: true,
   fontId: "cairo",
@@ -1041,12 +312,11 @@ function opacityExpr(stops) {
   return ["interpolate", ["linear"], ["zoom"], ...flat];
 }
 
-function lineClassFilter(classes) {
-  return ["all", ["==", "$type", "LineString"], ["match", ["get", "class"], classes, true, false]];
-}
-
-function polygonClassFilter(classes) {
-  return ["all", ["==", "$type", "Polygon"], ["match", ["get", "class"], classes, true, false]];
+// MapLibre 3.x parses a top-level "all" filter as a LEGACY filter, where
+// nested expressions are rejected. Class filtering therefore has to be the
+// top-level expression itself: ["in", ["get","class"], ["literal", [...]]].
+function classFilter(classes) {
+  return ["in", ["get", "class"], ["literal", classes]];
 }
 
 function generateMapStyle(theme) {
@@ -1080,7 +350,6 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "water",
-        filter: ["==", "$type", "Polygon"],
         paint: {
           "fill-color": t.water,
           "fill-opacity": 1,
@@ -1093,7 +362,6 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "waterway",
-        filter: ["==", "$type", "LineString"],
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.waterway,
@@ -1108,7 +376,7 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "landcover",
-        filter: polygonClassFilter(["park", "wood", "grass", "scrub", "wetland", "nature_reserve", "golf_course"]),
+        filter: classFilter(["park", "wood", "grass", "scrub", "wetland", "nature_reserve", "golf_course"]),
         paint: { "fill-color": t.parks, "fill-opacity": 0.9 },
       },
       {
@@ -1116,18 +384,34 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "landuse",
-        filter: polygonClassFilter(["park", "nature_reserve", "golf_course"]),
+        filter: classFilter(["park", "nature_reserve", "golf_course"]),
         paint: { "fill-color": t.parks, "fill-opacity": 0.9 },
       },
 
       // Landuse areas
       {
-        id: "landuse_residential",
+        id: "landuse_zones",
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "landuse",
-        filter: polygonClassFilter(["residential", "commercial", "industrial", "institutional"]),
+        filter: classFilter(["residential", "commercial", "industrial", "institutional"]),
         paint: { "fill-color": t.landcover || t.land, "fill-opacity": 0.6 },
+      },
+
+      // Administrative boundaries
+      {
+        id: "boundary_admin",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "boundary",
+        filter: ["<=", ["get", "admin_level"], 4],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": ui.text,
+          "line-width": ["interpolate", ["linear"], ["zoom"], 4, 0.4, 10, 0.8, 14, 1.4],
+          "line-opacity": 0.35,
+          "line-dasharray": [3, 2],
+        },
       },
 
       // Aeroway
@@ -1136,7 +420,6 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "aeroway",
-        filter: ["==", "$type", "Polygon"],
         paint: { "fill-color": t.aeroway || t.land, "fill-opacity": 0.8 },
       },
 
@@ -1146,7 +429,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(["rail", "transit"]),
+        filter: classFilter(["rail", "transit"]),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.rail,
@@ -1161,7 +444,6 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "aeroway",
-        filter: ["==", "$type", "LineString"],
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.aeroway || t.rail,
@@ -1176,7 +458,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.major),
+        filter: classFilter(LAYER_CLASSES.roads.major),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.major,
@@ -1190,7 +472,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.minor_high),
+        filter: classFilter(LAYER_CLASSES.roads.minor_high),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.minor_high,
@@ -1204,7 +486,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.minor_mid),
+        filter: classFilter(LAYER_CLASSES.roads.minor_mid),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.minor_mid,
@@ -1218,7 +500,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.minor_low),
+        filter: classFilter(LAYER_CLASSES.roads.minor_low),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.minor_low,
@@ -1232,7 +514,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.path),
+        filter: classFilter(LAYER_CLASSES.roads.path),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.path,
@@ -1247,7 +529,7 @@ function generateMapStyle(theme) {
         type: "line",
         source: SOURCE_ID,
         "source-layer": "transportation",
-        filter: lineClassFilter(LAYER_CLASSES.roads.major),
+        filter: classFilter(LAYER_CLASSES.roads.major),
         layout: { "line-cap": "round", "line-join": "round" },
         paint: {
           "line-color": t.roads.outline || t.land,
@@ -1261,7 +543,6 @@ function generateMapStyle(theme) {
         type: "fill-extrusion",
         source: SOURCE_ID,
         "source-layer": "building",
-        filter: ["==", "$type", "Polygon"],
         paint: {
           "fill-extrusion-color": t.buildings,
           "fill-extrusion-height": ["interpolate", ["linear"], ["zoom"], 14, 0, 15.5, ["*", ["get", "height"], 0.5], 16, ["get", "height"]],
@@ -1277,7 +558,6 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "building",
-        filter: ["==", "$type", "Polygon"],
         paint: { "fill-color": t.buildings, "fill-opacity": 0.8 },
         maxzoom: 14,
       },
@@ -1288,24 +568,184 @@ function generateMapStyle(theme) {
         type: "fill",
         source: SOURCE_ID,
         "source-layer": "landcover",
-        filter: polygonClassFilter(["wood", "forest"]),
+        filter: classFilter(["wood", "forest"]),
         paint: { "fill-color": t.landcover || t.parks, "fill-opacity": 0.7 },
+      },
+
+      // ==========================================
+      // LABEL LAYERS (Symbol) — place & feature names
+      // ==========================================
+      {
+        id: "place_country",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "place",
+        filter: ["==", ["get", "class"], "country"],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 3, 10, 6, 13, 9, 18],
+          "text-transform": "uppercase",
+          "text-letter-spacing": 0.2,
+          "text-max-width": 8,
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.4 },
+        maxzoom: 9,
+      },
+      {
+        id: "place_state",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "place",
+        filter: ["in", ["get", "class"], ["literal", ["state", "province"]]],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 5, 10, 9, 13],
+          "text-transform": "uppercase",
+          "text-letter-spacing": 0.15,
+          "text-max-width": 7,
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.4 },
+        maxzoom: 11,
+      },
+      {
+        id: "place_city",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "place",
+        filter: ["in", ["get", "class"], ["literal", ["city", "town"]]],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Bold"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 8, 11, 12, 15, 17, 18],
+          "text-transform": "uppercase",
+          "text-letter-spacing": 0.12,
+          "text-max-width": 8,
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.6 },
+      },
+      {
+        id: "place_village",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "place",
+        filter: ["in", ["get", "class"], ["literal", ["village", "suburb", "neighbourhood", "hamlet"]]],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 10, 10, 15, 13],
+          "text-max-width": 8,
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.4 },
+      },
+      {
+        id: "water_name",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "water_name",
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Italic"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 9, 10, 15, 14],
+        },
+        paint: { "text-color": t.water, "text-halo-color": t.land, "text-halo-width": 1.2 },
+      },
+      {
+        id: "park_name",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "park",
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Italic"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 11, 10, 15, 13],
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.2 },
+      },
+      {
+        id: "road_name",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "transportation_name",
+        filter: ["in", ["get", "class"], ["literal", ["motorway", "trunk", "primary", "secondary"]]],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 12, 9, 16, 12],
+          "symbol-placement": "line",
+          "symbol-spacing": 250,
+        },
+        paint: { "text-color": t.roads.major, "text-halo-color": t.land, "text-halo-width": 1.6 },
+      },
+      {
+        id: "poi_name",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "poi",
+        filter: ["in", ["get", "class"], ["literal", ["airport", "railway", "hospital", "school", "university", "park", "attraction", "museum"]]],
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 13, 9, 16, 12],
+          "text-max-width": 8,
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.4 },
+      },
+      {
+        id: "aerodrome_label",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "aerodrome_label",
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 10, 10, 14, 13],
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.4 },
+      },
+      {
+        id: "mountain_peak_label",
+        type: "symbol",
+        source: SOURCE_ID,
+        "source-layer": "mountain_peak",
+        layout: {
+          "text-field": ["coalesce", ["get", "name:ar"], ["get", "name"]],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 11, 9, 15, 12],
+        },
+        paint: { "text-color": ui.text, "text-halo-color": t.land, "text-halo-width": 1.2 },
       },
     ],
   };
 }
 
+// MapLibre does NOT emit "style.load" when setStyle() is called with a style
+// object (only "styledata" / "sourcedata" / "idle" fire). Waiting for "idle"
+// is therefore the reliable way to know the freshly applied style is ready.
+function onStyleReady(cb) {
+  if (!state.map) return;
+  let done = false;
+  const run = () => {
+    if (done) return;
+    done = true;
+    try { cb(); } catch (e) { console.warn("onStyleReady:", e); }
+  };
+  state.map.once("idle", run);
+  setTimeout(run, 5000);
+}
+
 function applyTheme(theme) {
   if (!state.map) return;
-  
+
   const newStyle = generateMapStyle(theme);
-  
+
   try {
     state.map.setStyle(newStyle);
     state.currentLoadedStyleUrl = "generated";
     state.isStyleLoaded = false;
-    
-    state.map.once("style.load", () => {
+
+    onStyleReady(() => {
       state.isStyleLoaded = true;
       applyVectorLayers();
       applyMapFont(state.mapFont);
@@ -1324,6 +764,18 @@ function applyThemeVisuals() {
   const posterEl = document.getElementById("poster");
   const posterText = document.getElementById("posterText");
 
+  // IMPORTANT: no CSS filter on the map — vector styling already applies the
+  // exact theme palette. A filter here would distort the official colors.
+  if (mapCanvas) {
+    mapCanvas.style.filter = "none";
+  }
+
+  if (tintEl) {
+    tintEl.style.backgroundColor = state.tintColor || theme.ui.bg;
+    tintEl.style.mixBlendMode = "multiply";
+    tintEl.style.opacity = String(state.tintOpacity);
+  }
+
   if (posterEl) {
     posterEl.style.backgroundColor = theme.ui.bg;
   }
@@ -1339,23 +791,21 @@ function applyThemeVisuals() {
     }
   }
 
-  if (tintEl) {
-    tintEl.style.backgroundColor = state.tintColor || theme.ui.bg;
-    tintEl.style.mixBlendMode = theme.mix || "multiply";
-    tintEl.style.opacity = theme.id === "carrara" ? "0.08" : "0.32";
-  }
-
   document.querySelectorAll(".theme-card").forEach((c) => {
     c.classList.toggle("active", c.dataset.themeId === state.themeId);
   });
 }
 
 function initMapEngine() {
-  // Register Mapbox GL RTL Text plugin for proper Arabic text shaping on the map
-  if (typeof maplibregl !== "undefined" && maplibregl.setRTLTextPlugin) {
+  // Register RTL text plugin through MapLibre's own loader.
+  // NOTE: the plugin must NOT be added as a standalone <script> tag — it calls
+  // self.registerRTLTextPlugin() which only exists inside a MapLibre worker.
+  if (typeof maplibregl !== "undefined" && typeof maplibregl.setRTLTextPlugin === "function") {
     try {
-      const rtlStatus = maplibregl.getRTLTextPluginStatus();
-      if (rtlStatus === "unavailable") {
+      const status = typeof maplibregl.getRTLTextPluginStatus === "function"
+        ? maplibregl.getRTLTextPluginStatus()
+        : "unavailable";
+      if (status === "unavailable" || status === "deferred" || status === "loading") {
         maplibregl.setRTLTextPlugin(
           "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js",
           (err) => { if (err) console.warn("RTL text plugin notice:", err); },
@@ -1398,7 +848,6 @@ function initMapEngine() {
       applyMapLanguage(state.mapLang);
       applyThemeVisuals();
     });
-
     state.map.on("click", (e) => {
       if (!state.markersEdit) return;
       dropMarkerAt(e.lngLat.lat, e.lngLat.lng);
@@ -1458,13 +907,13 @@ function applyVectorLayers() {
       try { state.map.setLayoutProperty(id, "visibility", state.layers.roads ? "visible" : "none"); } catch (e) {}
     }
 
-    // Water
-    if (id === "water" || id === "waterway") {
+    // Water bodies
+    if (id === "water") {
       try { state.map.setLayoutProperty(id, "visibility", state.layers.water ? "visible" : "none"); } catch (e) {}
     }
 
     // Parks / Landcover
-    if (id === "parks" || id === "landuse_park" || id === "landuse_residential" || id === "landcover_wood") {
+    if (id === "parks" || id === "landuse_park" || id === "landcover_wood") {
       try { state.map.setLayoutProperty(id, "visibility", state.layers.parks ? "visible" : "none"); } catch (e) {}
     }
 
@@ -1484,8 +933,13 @@ function applyVectorLayers() {
     }
 
     // Landuse
-    if (id === "landuse_residential") {
+    if (id === "landuse_zones") {
       try { state.map.setLayoutProperty(id, "visibility", state.layers.landuse ? "visible" : "none"); } catch (e) {}
+    }
+
+    // Waterway (separate from water bodies)
+    if (id === "waterway") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.waterway ? "visible" : "none"); } catch (e) {}
     }
   });
 }
@@ -1521,53 +975,11 @@ function applyMapLanguage(langMode) {
   }
 
   style.layers.forEach((l) => {
-    if (
-      l.layout &&
-      l.layout["text-field"] &&
-      (l["source-layer"] === "place" || l["source-layer"] === "poi" || l.id.includes("label"))
-    ) {
+    if (l.layout && l.layout["text-field"]) {
       try {
         state.map.setLayoutProperty(l.id, "text-field", expr);
       } catch (e) {}
     }
-  });
-}
-
-function applyThemeVisuals() {
-  const theme = THEMES.find((th) => th.id === state.themeId) || THEMES[0];
-  const mapCanvas = document.getElementById("map");
-  const tintEl = document.getElementById("mapTint");
-  const posterEl = document.getElementById("poster");
-  const posterText = document.getElementById("posterText");
-
-  if (mapCanvas) {
-    mapCanvas.style.filter = theme.filter;
-  }
-
-  if (tintEl) {
-    tintEl.style.backgroundColor = state.tintColor || theme.ui.bg;
-    tintEl.style.mixBlendMode = theme.mix || "multiply";
-    tintEl.style.opacity = theme.id === "carrara" ? "0.08" : "0.32";
-  }
-
-  if (posterEl) {
-    posterEl.style.backgroundColor = theme.ui.bg;
-  }
-
-  if (posterText) {
-    posterText.style.color = theme.ui.text;
-    if (theme.isDark) {
-      posterText.classList.remove("theme-light");
-      posterText.style.filter = "drop-shadow(0 2px 10px rgba(0,0,0,0.9))";
-    } else {
-      posterText.classList.add("theme-light");
-      posterText.style.filter = "drop-shadow(0 1px 4px rgba(255,255,255,0.8))";
-    }
-  }
-
-  // Update visual card active selection
-  document.querySelectorAll(".theme-card").forEach((c) => {
-    c.classList.toggle("active", c.dataset.themeId === state.themeId);
   });
 }
 
@@ -1619,7 +1031,9 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
       const isActive = th.id === state.themeId;
       const land = th.map?.land || th.ui.bg;
       const water = th.map?.water || "#a8c4c4";
-      const roads = th.map?.roads || th.ui.text;
+      const parks = th.map?.parks || land;
+      const roadMajor = th.map?.roads?.major || th.ui.text;
+      const roadMinor = th.map?.roads?.minor_low || roadMajor;
       const textCol = th.ui.text;
 
       return `
@@ -1628,7 +1042,9 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
           <div class="theme-swatch-bar">
             <div class="theme-swatch-seg" style="background:${land};" title="Land: ${land}"></div>
             <div class="theme-swatch-seg" style="background:${water};" title="Water: ${water}"></div>
-            <div class="theme-swatch-seg" style="background:${roads};" title="Roads: ${roads}"></div>
+            <div class="theme-swatch-seg" style="background:${parks};" title="Parks: ${parks}"></div>
+            <div class="theme-swatch-seg" style="background:${roadMajor};" title="Roads: ${roadMajor}"></div>
+            <div class="theme-swatch-seg" style="background:${roadMinor};" title="Roads: ${roadMinor}"></div>
             <div class="theme-swatch-seg" style="background:${textCol};" title="Text: ${textCol}"></div>
           </div>
           <div class="theme-card-info">
@@ -1989,8 +1405,26 @@ function populateUI() {
   const inpTint = document.getElementById("inpTint");
   if (inpTint) inpTint.value = state.tintColor;
 
+  const rngTintOpacity = document.getElementById("rngTintOpacity");
+  if (rngTintOpacity) rngTintOpacity.value = Math.round(state.tintOpacity * 100);
+
+  const lblTintOpacityVal = document.getElementById("lblTintOpacityVal");
+  if (lblTintOpacityVal) lblTintOpacityVal.textContent = Math.round(state.tintOpacity * 100) + "%";
+
   const selMapFont = document.getElementById("selMapFont");
   if (selMapFont) selMapFont.value = state.mapFont;
+
+  const rngLetterSpacing = document.getElementById("rngLetterSpacing");
+  if (rngLetterSpacing) rngLetterSpacing.value = state.letterSpacing;
+
+  const lblLetterSpacingVal = document.getElementById("lblLetterSpacingVal");
+  if (lblLetterSpacingVal) lblLetterSpacingVal.textContent = state.letterSpacing + "em";
+
+  const selTextTransform = document.getElementById("selTextTransform");
+  if (selTextTransform) selTextTransform.value = state.textTransform;
+
+  const selTitleSize = document.getElementById("selTitleSize");
+  if (selTitleSize) selTitleSize.value = String(state.titleScale);
 
   const selMapLang = document.getElementById("selMapLang");
   if (selMapLang) selMapLang.value = state.mapLang;
@@ -2020,8 +1454,8 @@ function populateUI() {
   updateText("secPresetsTitle", t("secPresetsTitle"));
 
   updateText("secThemeTitle", t("secThemeTitle"));
-  updateText("themeCountPill", state.lang === "ar" ? "27 ثيم أصلي" : "27 Original Themes");
-  updateText("catAll", state.lang === "ar" ? "الكل (27)" : "All (27)");
+  updateText("themeCountPill", state.lang === "ar" ? "35 ثيم أصلي" : "35 Original Themes");
+  updateText("catAll", state.lang === "ar" ? "الكل (35)" : "All (35)");
   updateText("catDark", state.lang === "ar" ? "داكن وفخم" : "Dark & Luxury");
   updateText("catEarth", state.lang === "ar" ? "طبيعي وترابي" : "Earth & Nature");
   updateText("catLight", state.lang === "ar" ? "كلاسيكي وفاتح" : "Classic & Light");
@@ -2169,13 +1603,21 @@ function wireEventListeners() {
     renderThemeCards(currentThemeCat, e.target.value);
   });
 
-  // Theme Tint Color
+  // Theme Tint Color (optional overlay, off by default)
   document.getElementById("inpTint")?.addEventListener("input", (e) => {
     state.tintColor = e.target.value;
     const tintEl = document.getElementById("mapTint");
     const lblTintVal = document.getElementById("lblTintVal");
     if (tintEl) tintEl.style.backgroundColor = state.tintColor;
     if (lblTintVal) lblTintVal.textContent = state.tintColor;
+  });
+
+  document.getElementById("rngTintOpacity")?.addEventListener("input", (e) => {
+    state.tintOpacity = parseInt(e.target.value, 10) / 100;
+    const tintEl = document.getElementById("mapTint");
+    const lbl = document.getElementById("lblTintOpacityVal");
+    if (tintEl) tintEl.style.opacity = String(state.tintOpacity);
+    if (lbl) lbl.textContent = e.target.value + "%";
   });
 
   // Typography Controls
@@ -2189,6 +1631,20 @@ function wireEventListeners() {
   });
   document.getElementById("selFont")?.addEventListener("change", (e) => {
     state.fontId = e.target.value;
+    renderPosterText();
+  });
+  document.getElementById("rngLetterSpacing")?.addEventListener("input", (e) => {
+    state.letterSpacing = parseFloat(e.target.value);
+    const lbl = document.getElementById("lblLetterSpacingVal");
+    if (lbl) lbl.textContent = state.letterSpacing + "em";
+    renderPosterText();
+  });
+  document.getElementById("selTextTransform")?.addEventListener("change", (e) => {
+    state.textTransform = e.target.value;
+    renderPosterText();
+  });
+  document.getElementById("selTitleSize")?.addEventListener("change", (e) => {
+    state.titleScale = parseFloat(e.target.value);
     renderPosterText();
   });
   document.getElementById("selMapFont")?.addEventListener("change", (e) => {

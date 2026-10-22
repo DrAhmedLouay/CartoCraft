@@ -778,23 +778,23 @@ input[type="color"] {
 
 .poster-title {
   display: block;
-  font-size: clamp(1.4rem, 3.2vh, 2.4rem);
+  font-size: calc(clamp(1.4rem, 3.2vh, 2.4rem) * var(--custom-title-scale, 1));
   font-weight: 800;
   line-height: 1.2;
   margin-bottom: 4px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: var(--custom-letter-spacing, 0.22em);
+  text-transform: var(--custom-text-transform, uppercase);
 }
 
 .poster-subtitle {
   display: block;
-  font-size: clamp(0.75rem, 1.4vh, 1rem);
+  font-size: calc(clamp(0.75rem, 1.4vh, 1rem) * var(--custom-title-scale, 1));
   font-weight: 600;
   line-height: 1.25;
   opacity: 0.92;
   margin-bottom: 6px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  letter-spacing: var(--custom-letter-spacing, 0.32em);
+  text-transform: var(--custom-text-transform, uppercase);
 }
 
 /* Fix Arabic cursive connectivity - NEVER disconnect Arabic glyphs */
