@@ -194,6 +194,45 @@
               </select>
             </div>
             <div class="hint" id="themeHint">تم نقل جميع الثيمات الكارتوغرافية الأصلية مع تناسق ألوان الشوارع والمسطحات واليابسة.</div>
+
+          <!-- Color Editor Section -->
+          <div class="panel-section" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+            <h3 class="section-title" id="secColorTitle">محرر الألوان (Color Editor)</h3>
+            <p class="color-editor-desc">تخصيص ألوان الثيم الحالي</p>
+            <div class="color-palette">
+              <div class="color-control">
+                <label for="inpBgColor" class="color-label">لون الخلفية</label>
+                <input type="color" id="inpBgColor" value="#0a1628">
+                <span class="color-value">#0a1628</span>
+              </div>
+              <div class="color-control">
+                <label for="inpRoadMajor" class="color-label">لون الطرق الرئيسية</label>
+                <input type="color" id="inpRoadMajor" value="#1a1628">
+                <span class="color-value">#1a1628</span>
+              </div>
+              <div class="color-control">
+                <label for="inpRoadMinor" class="color-label">لون الطرق الثانوية</label>
+                <input type="color" id="inpRoadMinor" value="#565049">
+                <span class="color-value">#565049</span>
+              </div>
+              <div class="color-control">
+                <label for="inpWaterColor" class="color-label">لون الماء</label>
+                <input type="color" id="inpWaterColor" value="#0a0e0c">
+                <span class="color-value">#0a0e0c</span>
+              </div>
+              <div class="color-control">
+                <label for="inpTextColor" class="color-label">لون النصوص</label>
+                <input type="color" id="inpTextColor" value="#d6b352">
+                <span class="color-value">#d6b352</span>
+              </div>
+            </div>
+            <button class="btn btn-primary w-full" id="applyColors" style="margin-top: 12px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="applyColorsText">تطبيق الألوان</span>
+            </button>
+          </div>
+
+          <div class="hint" id="themeHint">تم نقل جميع الثيمات الكارتوغرافية الأصلية مع تناسق ألوان الشوارع والمسطحات واليابسة.</div>
           </div>
         </div>
 

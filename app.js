@@ -859,6 +859,20 @@ function applyThemeVisuals() {
   const posterEl = document.getElementById("poster");
   const posterText = document.getElementById("posterText");
 
+  // Apply custom colors from color editor if enabled
+  const customBgColor = document.getElementById("inpBgColor")?.value;
+  const customRoadMajor = document.getElementById("inpRoadMajor")?.value;
+  const customRoadMinor = document.getElementById("inpRoadMinor")?.value;
+  const customWaterColor = document.getElementById("inpWaterColor")?.value;
+  const customTextColor = document.getElementById("inpTextColor")?.value;
+
+  // Override theme colors with custom values
+  const customBg = customBgColor || theme.ui.bg;
+  const customRoadMaj = customRoadMajor || theme.map.roads.major;
+  const customRoadMin = customRoadMinor || theme.map.roads.minor_low;
+  const customWater = customWaterColor || theme.map.water;
+  const customText = customTextColor || theme.ui.text;
+
   // IMPORTANT: no CSS filter on the map — vector styling already applies the
   // exact theme palette. A filter here would distort the official colors.
   if (mapCanvas) {
@@ -866,17 +880,17 @@ function applyThemeVisuals() {
   }
 
   if (tintEl) {
-    tintEl.style.backgroundColor = state.tintColor || theme.ui.bg;
+    tintEl.style.backgroundColor = customBg;
     tintEl.style.mixBlendMode = "multiply";
     tintEl.style.opacity = String(state.tintOpacity);
   }
 
   if (posterEl) {
-    posterEl.style.backgroundColor = theme.ui.bg;
+    posterEl.style.backgroundColor = customBg;
   }
 
   if (posterText) {
-    posterText.style.color = theme.ui.text;
+    posterText.style.color = customText;
     if (theme.isDark) {
       posterText.classList.remove("theme-light");
       posterText.style.filter = "drop-shadow(0 2px 10px rgba(0,0,0,0.9))";
@@ -885,6 +899,15 @@ function applyThemeVisuals() {
       posterText.style.filter = "drop-shadow(0 1px 4px rgba(255,255,255,0.8))";
     }
   }
+
+  // Apply custom road colors to map layers
+  // This will be applied through the theme system
+  // We'll store the custom colors in state for later use
+  state.customBgColor = customBgColor;
+  state.customRoadMajor = customRoadMajor;
+  state.customRoadMinor = customRoadMinor;
+  state.customWaterColor = customWaterColor;
+  state.customTextColor = customTextColor;
 
   document.querySelectorAll(".theme-card").forEach((c) => {
     c.classList.toggle("active", c.dataset.themeId === state.themeId);
@@ -1862,6 +1885,33 @@ function wireEventListeners() {
   document.getElementById("selOverlayBlend")?.addEventListener("change", (e) => {
     state.overlayBlend = e.target.value;
     applyOverlayLayer();
+  });
+
+  // Color Editor Controls
+  document.getElementById("inpBgColor")?.addEventListener("input", (e) => {
+    applyThemeVisuals();
+    const val = document.getElementById("color-bg-value");
+    if (val) val.textContent = e.target.value;
+  });
+  document.getElementById("inpRoadMajor")?.addEventListener("input", (e) => {
+    applyThemeVisuals();
+    const val = document.getElementById("color-road-major-value");
+    if (val) val.textContent = e.target.value;
+  });
+  document.getElementById("inpRoadMinor")?.addEventListener("input", (e) => {
+    applyThemeVisuals();
+    const val = document.getElementById("color-road-minor-value");
+    if (val) val.textContent = e.target.value;
+  });
+  document.getElementById("inpWaterColor")?.addEventListener("input", (e) => {
+    applyThemeVisuals();
+    const val = document.getElementById("color-water-value");
+    if (val) val.textContent = e.target.value;
+  });
+  document.getElementById("inpTextColor")?.addEventListener("input", (e) => {
+    applyThemeVisuals();
+    const val = document.getElementById("color-text-value");
+    if (val) val.textContent = e.target.value;
   });
 
   // Typography Controls
