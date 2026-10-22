@@ -412,18 +412,81 @@ input[type="color"] {
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   text-align: start;
+  overflow: hidden;
 }
 
 .theme-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.15);
   border-color: #cbd5e1;
 }
 
+/* Active press state */
+.theme-card:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Focus state for keyboard navigation */
+.theme-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Active theme indicator */
 .theme-card.active {
   border-color: var(--color-accent);
   background: #fcfcff;
   box-shadow: 0 0 0 2.5px rgba(79, 70, 229, 0.25), 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+/* Hover on swatch bar */
+.theme-card:hover .theme-swatch-seg {
+  transition: transform 0.15s ease;
+}
+.theme-card:hover .theme-swatch-seg:not(:hover) {
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   Map Loading & Transition States
+   ========================================== */
+.map-canvas-transition {
+  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.8s ease;
+}
+
+/* Loading spinner overlay */
+.map-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.map-loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.map-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Quad-Swatch Color Bar */
@@ -888,7 +951,7 @@ input[type="color"] {
 
 .poster-attrib {
   pointer-events: none;
-  font-size: 0.68rem;
+  font-size: 0.3rem;
   color: rgba(255, 255, 255, 0.85);
   text-align: left;
   margin-top: auto;

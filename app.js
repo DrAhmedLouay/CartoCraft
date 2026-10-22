@@ -926,6 +926,8 @@ function initMapEngine() {
     });
 
     state.map.on("load", () => {
+      const loading = document.getElementById("mapLoading");
+      if (loading) loading.classList.add("hidden");
       state.isStyleLoaded = true;
       applyVectorLayers();
       applyMapFont(state.mapFont);
@@ -1083,6 +1085,12 @@ function switchTheme(themeId) {
   const theme = THEMES.find((th) => th.id === themeId) || THEMES[0];
   state.tintColor = theme.ui.bg;
 
+  // Add transition class for smooth color transition
+  const mapCanvas = document.getElementById("map");
+  if (mapCanvas) {
+    mapCanvas.style.transition = "background-color 0.8s ease, filter 0.8s ease";
+  }
+
   const inpTint = document.getElementById("inpTint");
   const lblTintVal = document.getElementById("lblTintVal");
   if (inpTint) inpTint.value = theme.ui.bg;
@@ -1090,6 +1098,13 @@ function switchTheme(themeId) {
 
   applyTheme(theme);
   updateMetaDisplay();
+
+  // Remove transition after animation completes (allows next transition)
+  setTimeout(() => {
+    if (mapCanvas) {
+      mapCanvas.style.transition = "";
+    }
+  }, 900);
 }
 
 let currentThemeCat = "all";

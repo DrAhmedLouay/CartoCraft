@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;800&family=Almarai:wght@400;700;800&family=Changa:wght@400;600;700;800&family=Space+Grotesk:wght@400;600;700&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:wght@400;700;900&family=Oswald:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21'/%3E%3Cline x1='9' y1='3' x2='9' y2='18'/%3E%3Cline x1='15' y1='6' x2='15' y2='21'/%3E%3C/svg%3E">
+<link rel="icon" href="Icon.jpg" type="image/jpg">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewbox=%220 0 180 180%22 fill=%22%234f46e5%22%3E%3Cpolygon points=%2227 27 81 27 81 81 27 54 54 54 54 27 27 27 27%22/%3E%3Ccircle cx=%2254%22 cy=%2281%22 r=%2227%22/%3E%3Ctext x=%2254%22 y=%22117%22 font-size=%2272%22 font-family=%22%27Cairo%27%2C%20sans-serif%22 fill=%22white%22>C%3C/text%3E></svg>">
+<meta name="msapplication-TileColor" content="#4f46e5">
+<meta name="theme-color" content="#4f46e5">
 <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="style.css">
 </head>
@@ -403,11 +406,13 @@
       <div class="poster-viewport" id="posterViewport">
         <div class="poster" id="poster">
           <div class="poster-map-wrap" id="posterMapWrap">
-            <div id="map"></div>
+<div id="map"></div>
             <div class="map-tint" id="mapTint"></div>
             <div class="map-overlay" id="mapOverlay"></div>
-          </div>
-          <div class="poster-overlay" id="posterOverlay">
+            <div class="map-loading" id="mapLoading">
+              <div class="map-loading-spinner"></div>
+            </div>
+            <div class="poster-overlay" id="posterOverlay">
             <div class="poster-text" id="posterText"></div>
               <div class="poster-attrib" id="posterAttrib">
                 © OpenStreetMap contributors · صُنع بواسطة CartoCraft كارتوكرافت
@@ -441,5 +446,9 @@
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="themes.js"></script>
 <script src="app.js"></script>
+<!-- صورة التطبيق من التحميلات (تعمل محلياً على هذا الجهاز) -->
+<img src="/Users/ahmedlouay/Downloads/Icon.jpg" alt="شعار CartoCraft" 
+     style="display: none; width: 200px; margin: 20px auto;">
+</script>
 </body>
 </html>

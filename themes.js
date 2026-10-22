@@ -226,11 +226,11 @@ const THEMES = [
     "description": "Deep navy background with gold/copper roads - luxury atlas aesthetic",
     "arDesc": "أزرق كحلي عميق مع شوارع ذهبية ونحاسية فخمة",
     "ui": {
-      "bg": "#0A1628",
+      "bg": "#011640",
       "text": "#D6B352"
     },
     "map": {
-      "land": "#0A1628",
+      "land": "#011640",
       "landcover": "#0D1C2F",
       "water": "#061020",
       "waterway": "#061020",
