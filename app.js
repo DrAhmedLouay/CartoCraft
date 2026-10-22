@@ -2121,6 +2121,247 @@ function wireEventListeners() {
 // ==========================================
 // 14. Application Initialization
 // ==========================================
+
+  // ==========================================
+  // Enhanced Interactive Animations
+  // ==========================================
+  
+  // 1. Cursor Trail Effect (optional, for desktop)
+  if (!('ontouchstart' in window)) {
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.cssText = `
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      mix-blend-mode: screen;
+    `;
+    document.body.appendChild(trail);
+    
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      trail.style.opacity = '0.3';
+    });
+    
+    function animateTrail() {
+      trailX += (mouseX - trailX) * 0.15;
+      trailY += (mouseY - trailY) * 0.15;
+      trail.style.transform = `translate(${trailX - 10}px, ${trailY - 10}px)`;
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+    
+    document.addEventListener('mouseleave', () => {
+      trail.style.opacity = '0';
+    });
+  }
+  
+  // 2. Scroll Reveal for Sections
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+  
+  // Observe section titles
+  document.querySelectorAll('.section-title').forEach(title => {
+    title.style.animationPlayState = 'paused';
+    sectionObserver.observe(title);
+  });
+  
+  // 3. Button Ripple Effect Enhancement
+  document.querySelectorAll('.btn, .tool-btn, .tab-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: rippleEffect 0.6s ease-out forwards;
+        pointer-events: none;
+      `;
+      
+      this.style.position = 'relative';
+      this.style.overflow = 'hidden';
+      this.appendChild(ripple);
+      
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+  
+  // Add ripple keyframes
+  const rippleStyle = document.createElement('style');
+  rippleStyle.textContent = `
+    @keyframes rippleEffect {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(rippleStyle);
+  
+  // 4. Parallax Effect on Map Overlay (subtle)
+  let parallaxActive = false;
+  const mapWrap = document.getElementById('posterMapWrap');
+  if (mapWrap) {
+    mapWrap.addEventListener('mousemove', (e) => {
+      if (!parallaxActive) return;
+      const rect = mapWrap.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      
+      const overlay = document.getElementById('mapOverlay');
+      if (overlay) {
+        overlay.style.transform = `translate(${x * 5}px, ${y * 5}px)`;
+      }
+    });
+    
+    mapWrap.addEventListener('mouseenter', () => { parallaxActive = true; });
+    mapWrap.addEventListener('mouseleave', () => { 
+      parallaxActive = false;
+      const overlay = document.getElementById('mapOverlay');
+      if (overlay) overlay.style.transform = 'translate(0, 0)';
+    });
+  }
+  
+  // 5. Keyboard Navigation Enhancement
+  document.addEventListener('keydown', (e) => {
+    // Escape to close modals/dropdowns
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.tab-panel.active').forEach(p => {
+        // Could close dropdowns here
+      });
+    }
+    
+    // Arrow keys for theme navigation
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      const activeCard = document.querySelector('.theme-card.active');
+      if (activeCard) {
+        const cards = Array.from(document.querySelectorAll('.theme-card:not([style*="display: none"])'));
+        const currentIndex = cards.indexOf(activeCard);
+        let nextIndex = currentIndex + (e.key === 'ArrowRight' ? 1 : -1);
+        if (nextIndex >= 0 && nextIndex < cards.length) {
+          cards[nextIndex].click();
+          cards[nextIndex].focus();
+        }
+      }
+    }
+  });
+  
+  // 6. Theme Card Focus Ring Enhancement
+  document.addEventListener('focusin', (e) => {
+    if (e.target.classList.contains('theme-card')) {
+      e.target.style.boxShadow = '0 0 0 3px var(--color-accent), 0 8px 25px rgba(79, 70, 229, 0.3)';
+    }
+  });
+  
+  document.addEventListener('focusout', (e) => {
+    if (e.target.classList.contains('theme-card')) {
+      if (!e.target.classList.contains('active')) {
+        e.target.style.boxShadow = '';
+      }
+    }
+  });
+  
+  // 7. Color Picker Live Preview Enhancement
+  document.querySelectorAll('input[type="color"]').forEach(picker => {
+    picker.addEventListener('input', function() {
+      // Add pulse animation on change
+      this.style.animation = 'colorPulse 0.3s ease';
+      setTimeout(() => this.style.animation = '', 300);
+    });
+  });
+  
+  // Add color pulse keyframes
+  const colorPulseStyle = document.createElement('style');
+  colorPulseStyle.textContent = `
+    @keyframes colorPulse {
+      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.6); }
+      50% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+    }
+  `;
+  document.head.appendChild(colorPulseStyle);
+  
+  // 8. Smooth Scroll for Anchor Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  );
+  
+  // 9. Window Resize Handler for Map
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (state.map) {
+        state.map.resize();
+      }
+    }, 250);
+  );
+  
+  // 10. Theme Change Celebration Effect
+  const originalSwitchTheme = switchTheme;
+  switchTheme = function(themeId) {
+    // Add celebration effect
+    const cards = document.querySelectorAll('.theme-card');
+    cards.forEach((card, i) => {
+      if (card.dataset.themeId === themeId) {
+        card.style.animation = 'themeSelectCelebrate 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        setTimeout(() => card.style.animation = '', 600);
+      }
+    });
+    
+    return originalSwitchTheme.apply(this, arguments);
+  };
+  
+  // Add celebration keyframes
+  const celebrateStyle = document.createElement('style');
+  celebrateStyle.textContent = `
+    @keyframes themeSelectCelebrate {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 var(--color-accent); }
+      25% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(79, 70, 229, 0.5); }
+      50% { transform: scale(0.98); box-shadow: 0 0 0 5px var(--color-accent); }
+      100% { transform: scale(1); box-shadow: 0 0 0 3px var(--color-accent); }
+    }
+  `;
+  document.head.appendChild(celebrateStyle);
+
+
 function initApp() {
   setLanguage("ar");
   applyLayout(state.layoutId);

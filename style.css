@@ -1231,3 +1231,371 @@ input[type="color"] {
     display: none;
   }
 }
+
+/* ==========================================
+   Professional Interactive Animations
+   ========================================== */
+
+/* Ripple Effect on Buttons */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0); /* GPU acceleration */
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Floating Action Button Animation */
+.floating-toolbar .tool-btn {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-toolbar .tool-btn:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.floating-toolbar .tool-btn:active {
+  transform: scale(0.95);
+}
+
+/* Sidebar Panel Slide Animation */
+.app-sidebar {
+  animation: slideInFromRight 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Poster Text Animation */
+.poster-text {
+  animation: textReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Map Canvas Smooth Transitions */
+#map {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Color Picker Animation */
+input[type="color"] {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+input[type="color"]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+}
+
+/* Range Slider Animation */
+input[type="range"] {
+  transition: all 0.2s ease;
+}
+
+input[type="range"]:hover {
+  transform: scaleY(1.5);
+}
+
+/* Select Dropdown Animation */
+select {
+  transition: all 0.2s ease;
+}
+
+select:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Checkbox Animation */
+input[type="checkbox"] {
+  transition: all 0.15s ease;
+}
+
+input[type="checkbox"]:checked {
+  animation: checkPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes checkPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Tooltip Animation */
+[title] {
+  position: relative;
+}
+
+[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 1000;
+  animation: tooltipIn 0.2s ease forwards;
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Scroll Reveal Animation for Sections */
+.section-title {
+  opacity: 0;
+  animation: sectionTitleIn 0.5s ease forwards;
+}
+
+@keyframes sectionTitleIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered animation for section titles */
+.panel-section:nth-child(1) .section-title { animation-delay: 100ms; }
+.panel-section:nth-child(2) .section-title { animation-delay: 200ms; }
+.panel-section:nth-child(3) .section-title { animation-delay: 300ms; }
+.panel-section:nth-child(4) .section-title { animation-delay: 400ms; }
+.panel-section:nth-child(5) .section-title { animation-delay: 500ms; }
+
+/* Card Swatch Animation */
+.theme-swatch-seg {
+  transition: all 0.3s ease;
+}
+
+.theme-card:hover .theme-swatch-seg {
+  transform: scaleY(1.2);
+}
+
+.theme-card:hover .theme-swatch-seg:hover {
+  transform: scaleY(1.5) scaleX(1.1);
+  z-index: 2;
+}
+
+/* Map Overlay Transition */
+.map-overlay {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Export Button Pulse */
+#btnExport, #btnQuickExport {
+  position: relative;
+}
+
+#btnExport::after, #btnQuickExport::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid var(--color-accent);
+  opacity: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.05); }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Loading Skeleton Animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Map Tilt Animation */
+.maplibregl-map {
+  transition: transform 0.5s ease-out;
+}
+
+/* Notification Toast Animation */
+.toast {
+  animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%) translateY(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(-50%);
+  }
+}
+
+/* Search Input Focus Animation */
+#inpSearch:focus {
+  animation: focusGlow 0.3s ease;
+}
+
+@keyframes focusGlow {
+  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+}
+
+/* Layer Toggle Animation */
+.layer-item input[type="checkbox"] + .layer-info {
+  transition: all 0.2s ease;
+}
+
+.layer-item:hover .layer-info {
+  color: var(--color-accent);
+}
+
+/* Preset Chip Animation */
+.preset-chip {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.preset-chip:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.preset-chip:active {
+  transform: scale(0.95);
+}
+
+/* Layout Select Animation */
+#selLayout {
+  transition: all 0.2s ease;
+}
+
+#selLayout:focus {
+  transform: scale(1.02);
+}
+
+/* Export Format Animation */
+#selExport {
+  transition: all 0.2s ease;
+}
+
+/* Header Animation */
+.app-header {
+  animation: headerSlideDown 0.5s ease forwards;
+}
+
+@keyframes headerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Brand Logo Animation */
+.brand-logo {
+  animation: logoSpin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes logoSpin {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* Map Attribution Animation */
+.poster-attrib {
+  animation: attribFadeIn 1s ease 0.5s forwards;
+  opacity: 0;
+}
+
+@keyframes attribFadeIn {
+  to { opacity: 0.85; }
+}
+
+/* Mobile Responsive Animations */
+@media (max-width: 768px) {
+  .theme-card {
+    animation: themeCardInMobile 0.4s ease forwards;
+  }
+  
+  @keyframes themeCardInMobile {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* Print Styles - Disable Animations */
+@media print {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
