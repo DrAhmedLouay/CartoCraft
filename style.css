@@ -592,9 +592,10 @@ input[type="color"] {
 }
 
 .map-loading.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
+   opacity: 0;
+   pointer-events: none;
+   display: none;
+  }
 
 .map-loading-spinner {
   width: 40px;
