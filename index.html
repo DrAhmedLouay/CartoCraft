@@ -105,14 +105,14 @@
           <div class="panel-section">
             <h3 class="section-title" id="secPresetsTitle">مدن مميزة مقترحة</h3>
             <div class="presets-grid">
-              <button class="preset-chip" data-query="Baghdad, Iraq">🇮🇶 بغداد</button>
-              <button class="preset-chip" data-query="Erbil, Iraq">🏛️ اربيل</button>
-              <button class="preset-chip" data-query="Dubai, United Arab Emirates">🇦🇪 دبي</button>
-              <button class="preset-chip" data-query="Cairo, Egypt">🇪🇬 القاهرة</button>
-              <button class="preset-chip" data-query="Tokyo, Japan">🇯🇵 طوكيو</button>
-              <button class="preset-chip" data-query="Paris, France">🇫🇷 باريس</button>
-              <button class="preset-chip" data-query="London, UK">🇬🇧 لندن</button>
-              <button class="preset-chip" data-query="New York, USA">🇺🇸 نيويورك</button>
+              <button class="preset-chip" data-query="Baghdad, Iraq" data-en="Baghdad" data-ar="بغداد">🇮🇶 بغداد</button>
+              <button class="preset-chip" data-query="Erbil, Iraq" data-en="Erbil" data-ar="أربيل">🏛️ اربيل</button>
+              <button class="preset-chip" data-query="Dubai, United Arab Emirates" data-en="Dubai" data-ar="دبي">🇦🇪 دبي</button>
+              <button class="preset-chip" data-query="Cairo, Egypt" data-en="Cairo" data-ar="القاهرة">🇪🇬 القاهرة</button>
+              <button class="preset-chip" data-query="Tokyo, Japan" data-en="Tokyo" data-ar="طوكيو">🇯🇵 طوكيو</button>
+              <button class="preset-chip" data-query="Paris, France" data-en="Paris" data-ar="باريس">🇫🇷 باريس</button>
+              <button class="preset-chip" data-query="London, UK" data-en="London" data-ar="لندن">🇬🇧 لندن</button>
+              <button class="preset-chip" data-query="New York, USA" data-en="New York" data-ar="نيويورك">🇺🇸 نيويورك</button>
             </div>
           </div>
         </div>
@@ -156,6 +156,40 @@
                 <span class="color-val-label" id="lblTintOpacityVal">0%</span>
               </div>
             </div>
+
+            <!-- Overlay Layer -->
+            <div class="field" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+              <label for="selOverlay" id="lblOverlay">طبقة التظليل فوق الخريطة (Overlay Layer)</label>
+              <select id="selOverlay">
+                <option value="none" id="ovNone">بدون طبقة (None)</option>
+                <option value="vignette" id="ovVignette">تظليل الحواف (Vignette)</option>
+                <option value="radial" id="ovRadial">إضاءة بؤرية (Radial Spotlight)</option>
+                <option value="bottomFade" id="ovBottomFade">تعتيم سفلي (Bottom Fade)</option>
+                <option value="topFade" id="ovTopFade">تعتيم علوي (Top Fade)</option>
+                <option value="diagonal" id="ovDiagonal">تدرج قطري (Diagonal)</option>
+                <option value="colorWash" id="ovColorWash">طبقة لونية موحّدة (Color Wash)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="inpOverlayColor" id="lblOverlayColor">لون طبقة التظليل</label>
+              <div class="color-picker-row">
+                <input type="color" id="inpOverlayColor" value="#000000">
+                <span class="color-val-label" id="lblOverlayColorVal">#000000</span>
+                <input type="range" id="rngOverlayOpacity" min="0" max="100" step="1" value="45" style="flex:1; accent-color: var(--color-accent);">
+                <span class="color-val-label" id="lblOverlayOpacityVal">45%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="selOverlayBlend" id="lblOverlayBlend">نمط مزج الطبقة (Blend Mode)</label>
+              <select id="selOverlayBlend">
+                <option value="normal" id="blNormal">عادي (Normal)</option>
+                <option value="multiply" id="blMultiply">ضرب (Multiply)</option>
+                <option value="screen" id="blScreen">شاشة (Screen)</option>
+                <option value="overlay" id="blOverlay">تراكب (Overlay)</option>
+                <option value="soft-light" id="blSoftLight">ضوء ناعم (Soft Light)</option>
+                <option value="color-burn" id="blColorBurn">حرق لوني (Color Burn)</option>
+              </select>
+            </div>
             <div class="hint" id="themeHint">تم نقل جميع الثيمات الكارتوغرافية الأصلية مع تناسق ألوان الشوارع والمسطحات واليابسة.</div>
           </div>
         </div>
@@ -196,20 +230,26 @@
             <div class="field">
               <label for="selTextTransform" id="lblTextTransform">حالة الأحرف (Text Transform)</label>
               <select id="selTextTransform">
-                <option value="uppercase">أحرف كبيرة (UPPERCASE)</option>
-                <option value="none">حالة النص الأصلية (Normal)</option>
-                <option value="capitalize">بداية كل كلمة حرف كبير (Capitalize)</option>
+                <option value="uppercase" id="optUpper">أحرف كبيرة (UPPERCASE)</option>
+                <option value="none" id="optNone">حالة النص الأصلية (Normal)</option>
+                <option value="capitalize" id="optCapitalize">بداية كل كلمة حرف كبير (Capitalize)</option>
               </select>
             </div>
             <div class="field">
-              <label for="selTitleSize" id="lblTitleSize">حجم العناوين الرئيسية</label>
-              <select id="selTitleSize">
-                <option value="0.85">صغير ومضغوط (Compact)</option>
-                <option value="1.0" selected>الحجم القياسي (Standard)</option>
-                <option value="1.25">كبير وبارز (Large & Bold)</option>
-                <option value="1.5">ضخم للملصقات (Massive)</option>
+              <label for="rngTitleSize" id="lblTitleSize">حجم العناوين الرئيسية (Title Size)</label>
+              <div class="input-wrap" style="align-items: center; gap: 10px;">
+                <input type="range" id="rngTitleSize" min="0.6" max="2" step="0.05" value="1" style="flex:1; accent-color: var(--color-accent);">
+                <span id="lblTitleSizeVal" class="color-val-label">100%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="selTextPosition" id="lblTextPosition">موضع النص على الملصق (Text Position)</label>
+              <select id="selTextPosition">
+                <option value="top" id="optPosTop">أعلى الملصق (Top)</option>
+                <option value="bottom" id="optPosBottom">أسفل الملصق (Bottom)</option>
               </select>
             </div>
+            <div class="hint" id="typeHint">تُعرض النصوص بخطوط عريضة وفواصل أنيقة متناسقة مع الخريطة.</div>
           </div>
 
           <div class="panel-section" style="margin-top: 8px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
@@ -217,20 +257,20 @@
             <div class="field">
               <label for="selMapFont" id="lblMapFont">نوع خط نصوص الخريطة</label>
               <select id="selMapFont">
-                <option value="Noto Sans Regular">Noto Sans (عادي متوازن)</option>
-                <option value="Noto Sans Bold">Noto Sans Bold (عريض وبارز)</option>
-                <option value="Noto Sans Italic">Noto Sans Italic (مائل كارتوغرافي)</option>
+                <option value="Noto Sans Regular" id="optNotoReg">Noto Sans (عادي متوازن)</option>
+                <option value="Noto Sans Bold" id="optNotoBold">Noto Sans Bold (عريض وبارز)</option>
+                <option value="Noto Sans Italic" id="optNotoItalic">Noto Sans Italic (مائل كارتوغرافي)</option>
               </select>
             </div>
             <div class="field">
               <label for="selMapLang" id="lblMapLang">لغة نصوص ومعالم الخريطة</label>
               <select id="selMapLang">
-                <option value="ar">العربية أولاً (Arabic Preferred)</option>
-                <option value="en">الإنجليزية أولاً (English Preferred)</option>
-                <option value="native">الاسم المحلي للبلد (Native Language)</option>
+                <option value="ar" id="optLangAr">العربية أولاً (Arabic Preferred)</option>
+                <option value="en" id="optLangEn">الإنجليزية أولاً (English Preferred)</option>
+                <option value="native" id="optLangNative">الاسم المحلي للبلد (Native Language)</option>
               </select>
             </div>
-            <div class="hint" id="typeHint">تم تفعيل المحاذاة والتشكيل السليم للحروف العربية لضمان اتصال الكلمات بدون تقطيع.</div>
+            <div class="hint" id="typeHintMap">تم تفعيل المحاذاة والتشكيل السليم للحروف العربية لضمان اتصال الكلمات بدون تقطيع.</div>
           </div>
         </div>
 
@@ -365,6 +405,7 @@
           <div class="poster-map-wrap" id="posterMapWrap">
             <div id="map"></div>
             <div class="map-tint" id="mapTint"></div>
+            <div class="map-overlay" id="mapOverlay"></div>
           </div>
           <div class="poster-overlay" id="posterOverlay">
             <div class="poster-text" id="posterText"></div>

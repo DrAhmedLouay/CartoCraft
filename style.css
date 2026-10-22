@@ -749,6 +749,54 @@ input[type="color"] {
   transition: background-color 0.2s ease, mix-blend-mode 0.2s ease;
 }
 
+/* ==========================================
+   Overlay Layer (artistic gradient overlays)
+   ========================================== */
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  --ov-color: #000000;
+  --ov-opacity: 0.45;
+  opacity: var(--ov-opacity);
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.map-overlay.ov-none {
+  display: none;
+}
+
+/* Darken the edges for a classic gallery print */
+.map-overlay.ov-vignette {
+  background: radial-gradient(ellipse 75% 65% at 50% 50%, transparent 38%, var(--ov-color) 100%);
+}
+
+/* Bright centre fading outwards */
+.map-overlay.ov-radial {
+  background: radial-gradient(circle 70% 55% at 50% 42%, transparent 20%, var(--ov-color) 100%);
+}
+
+/* Darken the bottom so the headline reads clearly */
+.map-overlay.ov-bottomFade {
+  background: linear-gradient(to top, var(--ov-color) 0%, transparent 48%);
+}
+
+/* Darken the top of the map */
+.map-overlay.ov-topFade {
+  background: linear-gradient(to bottom, var(--ov-color) 0%, transparent 48%);
+}
+
+/* Diagonal cinematic gradient */
+.map-overlay.ov-diagonal {
+  background: linear-gradient(135deg, transparent 25%, var(--ov-color) 100%);
+}
+
+/* Flat colour wash over the whole map */
+.map-overlay.ov-colorWash {
+  background: var(--ov-color);
+}
+
 /* Overlay & Typography */
 .poster-overlay {
   position: absolute;
@@ -759,6 +807,19 @@ input[type="color"] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* Text anchored to the bottom of the poster */
+.poster-overlay.text-bottom {
+  justify-content: flex-end;
+}
+.poster-overlay.text-bottom .poster-text {
+  order: 1;
+  margin-bottom: 10px;
+}
+.poster-overlay.text-bottom .poster-attrib {
+  order: 2;
+  margin-top: 0;
 }
 
 .poster-text {

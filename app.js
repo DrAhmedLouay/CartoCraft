@@ -33,6 +33,50 @@ const I18N = {
     lblCustomTitle: "تعديل اسم المدينة المعروض",
     lblCustomSubtitle: "تعديل اسم الدولة أو النص الثانوي",
     typeHint: "تُعرض النصوص بخطوط عريضة وفواصل أنيقة متناسقة مع الخريطة.",
+    lblLetterSpacing: "تباعد الحروف (Letter Spacing)",
+    lblTextTransform: "حالة الأحرف (Text Transform)",
+    lblTitleSize: "حجم العناوين الرئيسية (Title Size)",
+    lblTextPosition: "موضع النص على الملصق (Text Position)",
+    optUpper: "أحرف كبيرة (UPPERCASE)",
+    optNone: "حالة النص الأصلية (Normal)",
+    optCapitalize: "بداية كل كلمة حرف كبير (Capitalize)",
+    optPosTop: "أعلى الملصق (Top)",
+    optPosBottom: "أسفل الملصق (Bottom)",
+    optNotoReg: "Noto Sans (عادي متوازن)",
+    optNotoBold: "Noto Sans Bold (عريض وبارز)",
+    optNotoItalic: "Noto Sans Italic (مائل كارتوغرافي)",
+    optLangAr: "العربية أولاً (Arabic Preferred)",
+    optLangEn: "الإنجليزية أولاً (English Preferred)",
+    optLangNative: "الاسم المحلي للبلد (Native Language)",
+    secMapTypeTitle: "خط ونصوص الخريطة (Map Typography)",
+    typeHintMap: "تم تفعيل المحاذاة والتشكيل السليم للحروف العربية لضمان اتصال الكلمات بدون تقطيع.",
+    titleSearch: "بحث",
+    titleZoomIn: "تكبير",
+    titleZoomOut: "تصغير",
+    titleRecenter: "توسيط الخريطة",
+    titleTilt: "إمالة ثلاثية الأبعاد (3D Tilt)",
+    titleFull: "ملء الشاشة",
+    pageTitle: "CartoCraft كارتوكرافت | صانع ملصقات الخرائط الكارتوغرافية",
+    exportPng: "PNG (صورة شفافة عالية الجودة)",
+    exportJpeg: "JPEG (صورة مضغوطة للويب)",
+    phCustomTitle: "اسم المدينة المخصص",
+    phCustomSubtitle: "اسم الدولة المخصص",
+    lblOverlay: "طبقة التظليل فوق الخريطة (Overlay Layer)",
+    lblOverlayColor: "لون طبقة التظليل",
+    lblOverlayBlend: "نمط مزج الطبقة (Blend Mode)",
+    ovNone: "بدون طبقة (None)",
+    ovVignette: "تظليل الحواف (Vignette)",
+    ovRadial: "إضاءة بؤرية (Radial Spotlight)",
+    ovBottomFade: "تعتيم سفلي (Bottom Fade)",
+    ovTopFade: "تعتيم علوي (Top Fade)",
+    ovDiagonal: "تدرج قطري (Diagonal)",
+    ovColorWash: "طبقة لونية موحّدة (Color Wash)",
+    blNormal: "عادي (Normal)",
+    blMultiply: "ضرب (Multiply)",
+    blScreen: "شاشة (Screen)",
+    blOverlay: "تراكب (Overlay)",
+    blSoftLight: "ضوء ناعم (Soft Light)",
+    blColorBurn: "حرق لوني (Color Burn)",
     secLayersTitle: "الطبقات وعناصر الخريطة",
     lblRoads: "شبكة الطرق والشوارع",
     descRoads: "الطرق السريعة، الرئيسية، والفرعية",
@@ -101,6 +145,52 @@ const I18N = {
     lblCustomTitle: "Custom City Label",
     lblCustomSubtitle: "Custom Country / Subtitle",
     typeHint: "Spaced letter typography designed for modern minimalist posters.",
+    lblLetterSpacing: "Letter Spacing",
+    lblTextTransform: "Text Transform",
+    lblTitleSize: "Title Size",
+    lblTextPosition: "Text Position on Poster",
+    optUpper: "UPPERCASE",
+    optNone: "Normal (as written)",
+    optCapitalize: "Capitalize Each Word",
+    optPosTop: "Top of Poster",
+    optPosBottom: "Bottom of Poster",
+    optNotoReg: "Noto Sans (Regular & Balanced)",
+    optNotoBold: "Noto Sans Bold (Bold & Prominent)",
+    optNotoItalic: "Noto Sans Italic (Cartographic Italic)",
+    optLangAr: "Arabic Preferred",
+    optLangEn: "English Preferred",
+    optLangNative: "Native Local Name",
+    lblMapFont: "Map Text Font",
+    lblMapLang: "Map Text Language",
+    secMapTypeTitle: "Map Typography",
+    typeHintMap: "Proper Arabic alignment and shaping is enabled so words stay connected and never break apart.",
+    titleSearch: "Search",
+    titleZoomIn: "Zoom in",
+    titleZoomOut: "Zoom out",
+    titleRecenter: "Recenter map",
+    titleTilt: "3D Tilt",
+    titleFull: "Full screen",
+    pageTitle: "CartoCraft | Cartographic Map Poster Creator",
+    exportPng: "PNG (Lossless high quality)",
+    exportJpeg: "JPEG (Compressed for web)",
+    phCustomTitle: "Custom city name",
+    phCustomSubtitle: "Custom country name",
+    lblOverlay: "Overlay Layer over the map",
+    lblOverlayColor: "Overlay colour",
+    lblOverlayBlend: "Blend Mode",
+    ovNone: "None",
+    ovVignette: "Vignette (edge shading)",
+    ovRadial: "Radial Spotlight",
+    ovBottomFade: "Bottom Fade",
+    ovTopFade: "Top Fade",
+    ovDiagonal: "Diagonal Gradient",
+    ovColorWash: "Flat Colour Wash",
+    blNormal: "Normal",
+    blMultiply: "Multiply",
+    blScreen: "Screen",
+    blOverlay: "Overlay",
+    blSoftLight: "Soft Light",
+    blColorBurn: "Color Burn",
     secLayersTitle: "Map Elements & Layers",
     lblRoads: "Roads & Highways",
     descRoads: "Highways, primary roads, and local streets",
@@ -214,6 +304,10 @@ let state = {
   themeId: "midnight_blue",
   tintColor: "#0A1628",
   tintOpacity: 0,
+  overlayType: "vignette",
+  overlayColor: "#000000",
+  overlayOpacity: 0.45,
+  overlayBlend: "normal",
   showCity: true,
   showCountry: true,
   fontId: "cairo",
@@ -222,6 +316,7 @@ let state = {
   letterSpacing: 0.22,
   textTransform: "uppercase",
   titleScale: 1.0,
+  textPosition: "top",
   layers: { roads: true, water: true, parks: true, buildings: true, rail: true, aeroway: true, landuse: true, waterway: true },
   markerIcon: "pin",
   markersEdit: true,
@@ -1255,6 +1350,32 @@ function renderPosterText() {
   }
 
   container.innerHTML = html;
+  applyTextPosition();
+}
+
+// Anchor the poster headline either to the top or the bottom of the poster.
+function applyTextPosition() {
+  const overlay = document.getElementById("posterOverlay");
+  if (!overlay) return;
+  overlay.classList.toggle("text-bottom", state.textPosition === "bottom");
+  overlay.classList.toggle("text-top", state.textPosition !== "bottom");
+}
+
+// Apply the artistic overlay layer on top of the map.
+function applyOverlayLayer() {
+  const el = document.getElementById("mapOverlay");
+  if (!el) return;
+
+  el.className = "map-overlay";
+  if (state.overlayType && state.overlayType !== "none") {
+    el.classList.add("ov-" + state.overlayType);
+  } else {
+    el.classList.add("ov-none");
+  }
+
+  el.style.setProperty("--ov-color", state.overlayColor || "#000000");
+  el.style.setProperty("--ov-opacity", String(state.overlayOpacity));
+  el.style.mixBlendMode = state.overlayBlend || "normal";
 }
 
 function applyLayout(layoutId) {
@@ -1360,8 +1481,8 @@ function populateUI() {
   const selExport = document.getElementById("selExport");
   if (selExport) {
     selExport.innerHTML = `
-      <option value="png">PNG (Portable Network Graphics)</option>
-      <option value="jpeg">JPEG (High Quality)</option>
+      <option value="png">${t("exportPng")}</option>
+      <option value="jpeg">${t("exportJpeg")}</option>
     `;
   }
 
@@ -1411,6 +1532,24 @@ function populateUI() {
   const lblTintOpacityVal = document.getElementById("lblTintOpacityVal");
   if (lblTintOpacityVal) lblTintOpacityVal.textContent = Math.round(state.tintOpacity * 100) + "%";
 
+  const selOverlay = document.getElementById("selOverlay");
+  if (selOverlay) selOverlay.value = state.overlayType;
+
+  const inpOverlayColor = document.getElementById("inpOverlayColor");
+  if (inpOverlayColor) inpOverlayColor.value = state.overlayColor;
+
+  const lblOverlayColorVal = document.getElementById("lblOverlayColorVal");
+  if (lblOverlayColorVal) lblOverlayColorVal.textContent = state.overlayColor;
+
+  const rngOverlayOpacity = document.getElementById("rngOverlayOpacity");
+  if (rngOverlayOpacity) rngOverlayOpacity.value = Math.round(state.overlayOpacity * 100);
+
+  const lblOverlayOpacityVal = document.getElementById("lblOverlayOpacityVal");
+  if (lblOverlayOpacityVal) lblOverlayOpacityVal.textContent = Math.round(state.overlayOpacity * 100) + "%";
+
+  const selOverlayBlend = document.getElementById("selOverlayBlend");
+  if (selOverlayBlend) selOverlayBlend.value = state.overlayBlend;
+
   const selMapFont = document.getElementById("selMapFont");
   if (selMapFont) selMapFont.value = state.mapFont;
 
@@ -1423,8 +1562,14 @@ function populateUI() {
   const selTextTransform = document.getElementById("selTextTransform");
   if (selTextTransform) selTextTransform.value = state.textTransform;
 
-  const selTitleSize = document.getElementById("selTitleSize");
-  if (selTitleSize) selTitleSize.value = String(state.titleScale);
+  const rngTitleSize = document.getElementById("rngTitleSize");
+  if (rngTitleSize) rngTitleSize.value = String(state.titleScale);
+
+  const lblTitleSizeVal = document.getElementById("lblTitleSizeVal");
+  if (lblTitleSizeVal) lblTitleSizeVal.textContent = Math.round(state.titleScale * 100) + "%";
+
+  const selTextPosition = document.getElementById("selTextPosition");
+  if (selTextPosition) selTextPosition.value = state.textPosition;
 
   const selMapLang = document.getElementById("selMapLang");
   if (selMapLang) selMapLang.value = state.mapLang;
@@ -1462,6 +1607,22 @@ function populateUI() {
   updateText("catVibrant", state.lang === "ar" ? "فني ونيون" : "Artistic & Neon");
   updateText("lblTint", t("lblTint"));
   updateText("themeHint", t("themeHint"));
+  updateText("lblOverlay", t("lblOverlay"));
+  updateText("lblOverlayColor", t("lblOverlayColor"));
+  updateText("lblOverlayBlend", t("lblOverlayBlend"));
+  updateText("ovNone", t("ovNone"));
+  updateText("ovVignette", t("ovVignette"));
+  updateText("ovRadial", t("ovRadial"));
+  updateText("ovBottomFade", t("ovBottomFade"));
+  updateText("ovTopFade", t("ovTopFade"));
+  updateText("ovDiagonal", t("ovDiagonal"));
+  updateText("ovColorWash", t("ovColorWash"));
+  updateText("blNormal", t("blNormal"));
+  updateText("blMultiply", t("blMultiply"));
+  updateText("blScreen", t("blScreen"));
+  updateText("blOverlay", t("blOverlay"));
+  updateText("blSoftLight", t("blSoftLight"));
+  updateText("blColorBurn", t("blColorBurn"));
 
   const inpThemeSearch = document.getElementById("inpThemeSearch");
   if (inpThemeSearch) {
@@ -1475,6 +1636,46 @@ function populateUI() {
   updateText("lblCustomTitle", t("lblCustomTitle"));
   updateText("lblCustomSubtitle", t("lblCustomSubtitle"));
   updateText("typeHint", t("typeHint"));
+  updateText("lblLetterSpacing", t("lblLetterSpacing"));
+  updateText("lblTextTransform", t("lblTextTransform"));
+  updateText("lblTitleSize", t("lblTitleSize"));
+  updateText("lblTextPosition", t("lblTextPosition"));
+  updateText("optUpper", t("optUpper"));
+  updateText("optNone", t("optNone"));
+  updateText("optCapitalize", t("optCapitalize"));
+  updateText("optPosTop", t("optPosTop"));
+  updateText("optPosBottom", t("optPosBottom"));
+  updateText("secMapTypeTitle", t("secMapTypeTitle"));
+  updateText("lblMapFont", t("lblMapFont"));
+  updateText("lblMapLang", t("lblMapLang"));
+  updateText("optNotoReg", t("optNotoReg"));
+  updateText("optNotoBold", t("optNotoBold"));
+  updateText("optNotoItalic", t("optNotoItalic"));
+  updateText("optLangAr", t("optLangAr"));
+  updateText("optLangEn", t("optLangEn"));
+  updateText("optLangNative", t("optLangNative"));
+  updateText("typeHintMap", t("typeHintMap"));
+
+  // Tooltip titles
+  const setTitle = (id, str) => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute("title", str);
+  };
+  setTitle("btnSearch", t("titleSearch"));
+  setTitle("btnZoomIn", t("titleZoomIn"));
+  setTitle("btnZoomOut", t("titleZoomOut"));
+  setTitle("btnRecenter", t("titleRecenter"));
+  setTitle("btnTilt", t("titleTilt"));
+  setTitle("btnFull", t("titleFull"));
+
+  // Page title
+  document.title = t("pageTitle");
+
+  // Featured city chips (bilingual)
+  document.querySelectorAll(".preset-chip").forEach((chip) => {
+    const label = state.lang === "ar" ? chip.dataset.ar : chip.dataset.en;
+    if (label) chip.textContent = label;
+  });
 
   updateText("secLayersTitle", t("secLayersTitle"));
   updateText("lblRoads", t("lblRoads"));
@@ -1515,6 +1716,12 @@ function populateUI() {
 
   const inpSearch = document.getElementById("inpSearch");
   if (inpSearch) inpSearch.placeholder = t("searchPlaceholder");
+
+  const inpCustomTitle = document.getElementById("inpCustomTitle");
+  if (inpCustomTitle) inpCustomTitle.placeholder = t("phCustomTitle");
+
+  const inpCustomSubtitle = document.getElementById("inpCustomSubtitle");
+  if (inpCustomSubtitle) inpCustomSubtitle.placeholder = t("phCustomSubtitle");
 }
 
 function setLanguage(lang) {
@@ -1620,6 +1827,28 @@ function wireEventListeners() {
     if (lbl) lbl.textContent = e.target.value + "%";
   });
 
+  // Overlay Layer Controls
+  document.getElementById("selOverlay")?.addEventListener("change", (e) => {
+    state.overlayType = e.target.value;
+    applyOverlayLayer();
+  });
+  document.getElementById("inpOverlayColor")?.addEventListener("input", (e) => {
+    state.overlayColor = e.target.value;
+    const lbl = document.getElementById("lblOverlayColorVal");
+    if (lbl) lbl.textContent = state.overlayColor;
+    applyOverlayLayer();
+  });
+  document.getElementById("rngOverlayOpacity")?.addEventListener("input", (e) => {
+    state.overlayOpacity = parseInt(e.target.value, 10) / 100;
+    const lbl = document.getElementById("lblOverlayOpacityVal");
+    if (lbl) lbl.textContent = e.target.value + "%";
+    applyOverlayLayer();
+  });
+  document.getElementById("selOverlayBlend")?.addEventListener("change", (e) => {
+    state.overlayBlend = e.target.value;
+    applyOverlayLayer();
+  });
+
   // Typography Controls
   document.getElementById("chkCity")?.addEventListener("change", (e) => {
     state.showCity = e.target.checked;
@@ -1643,9 +1872,15 @@ function wireEventListeners() {
     state.textTransform = e.target.value;
     renderPosterText();
   });
-  document.getElementById("selTitleSize")?.addEventListener("change", (e) => {
+  document.getElementById("rngTitleSize")?.addEventListener("input", (e) => {
     state.titleScale = parseFloat(e.target.value);
+    const lbl = document.getElementById("lblTitleSizeVal");
+    if (lbl) lbl.textContent = Math.round(state.titleScale * 100) + "%";
     renderPosterText();
+  });
+  document.getElementById("selTextPosition")?.addEventListener("change", (e) => {
+    state.textPosition = e.target.value;
+    applyTextPosition();
   });
   document.getElementById("selMapFont")?.addEventListener("change", (e) => {
     applyMapFont(e.target.value);
@@ -1760,6 +1995,7 @@ function wireEventListeners() {
 function initApp() {
   setLanguage("ar");
   applyLayout(state.layoutId);
+  applyOverlayLayer();
   initMapEngine();
   wireEventListeners();
 
