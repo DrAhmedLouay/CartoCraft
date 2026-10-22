@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CartoCraft كارتوكرافت | صانع ملصقات الخرائط الكارتوغرافية</title>
+<meta name="description" content="صمم ملصقات وخلفيات خرائط مخصصة وعالية الدقة لأي مدينة في العالم باستخدام بيانات OpenStreetMap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;800&family=Almarai:wght@400;700;800&family=Changa:wght@400;600;700;800&family=Space+Grotesk:wght@400;600;700&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:wght@400;700;900&family=Oswald:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-layout">
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="app-brand">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+            <line x1="9" y1="3" x2="9" y2="18"/>
+            <line x1="15" y1="6" x2="15" y2="21"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">CartoCraft</span>
+          <span class="brand-tag" id="headerTag">محرك الخرائط</span>
+        </div>
+      </div>
+      <div class="location-badge" id="headerLocationBadge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="headerLocText">بغداد، العراق</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="header-btn" id="btnLang" title="تغيير اللغة / Switch Language">EN</button>
+      <button class="header-btn btn-export-quick" id="btnQuickExport">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span id="quickExportText">تحميل الملصق</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Body -->
+  <div class="app-body">
+    <!-- Sidebar Controls -->
+    <aside class="app-sidebar" id="sidebar">
+      <!-- Tabs Navigation -->
+      <nav class="sidebar-tabs" id="sidebarTabs">
+        <button class="tab-btn active" data-tab="location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="tab-label" id="tabLocLabel">الموقع</span>
+        </button>
+        <button class="tab-btn" data-tab="theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 0 0 0 14v6a10 10 0 0 0 0-20z"/></svg>
+          <span class="tab-label" id="tabThemeLabel">المظهر</span>
+        </button>
+        <button class="tab-btn" data-tab="typography">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          <span class="tab-label" id="tabTypeLabel">النصوص</span>
+        </button>
+        <button class="tab-btn" data-tab="layers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <span class="tab-label" id="tabLayersLabel">الطبقات</span>
+        </button>
+        <button class="tab-btn" data-tab="markers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="tab-label" id="tabMarkersLabel">العلامات</span>
+        </button>
+        <button class="tab-btn" data-tab="export">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h10"/></svg>
+          <span class="tab-label" id="tabExportLabel">المقاس</span>
+        </button>
+      </nav>
+
+      <!-- Tab Panels Content Container -->
+      <div class="sidebar-content">
+        <!-- 1. Location Panel -->
+        <div class="tab-panel active" id="panel-location">
+          <div class="panel-section">
+            <h3 class="section-title" id="secSearchTitle">البحث عن موقع</h3>
+            <div class="field">
+              <label for="inpSearch" id="lblSearch">اسم المدينة أو الإحداثيات</label>
+              <div class="input-wrap">
+                <input type="text" id="inpSearch" placeholder="مثال: بغداد، باريس، طوكيو أو 33.31, 44.36">
+                <button class="btn btn-icon" id="btnSearch" title="بحث">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </button>
+              </div>
+              <div class="hint" id="searchHint">يمكنك كتابة اسم أي مدينة بالعالم (مثل بغداد) أو إحداثيات دقيقة.</div>
+            </div>
+
+            <div class="field">
+              <button class="btn btn-ghost w-full" id="btnLoc">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                <span id="btnLocText">استخدام موقعي الحالي</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <h3 class="section-title" id="secPresetsTitle">مدن مميزة مقترحة</h3>
+            <div class="presets-grid">
+              <button class="preset-chip" data-query="Baghdad, Iraq">🇮🇶 بغداد</button>
+              <button class="preset-chip" data-query="Erbil, Iraq">🏛️ اربيل</button>
+              <button class="preset-chip" data-query="Dubai, United Arab Emirates">🇦🇪 دبي</button>
+              <button class="preset-chip" data-query="Cairo, Egypt">🇪🇬 القاهرة</button>
+              <button class="preset-chip" data-query="Tokyo, Japan">🇯🇵 طوكيو</button>
+              <button class="preset-chip" data-query="Paris, France">🇫🇷 باريس</button>
+              <button class="preset-chip" data-query="London, UK">🇬🇧 لندن</button>
+              <button class="preset-chip" data-query="New York, USA">🇺🇸 نيويورك</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Theme Panel (Original TerraInk Themes with Rich Showcase) -->
+        <div class="tab-panel" id="panel-theme">
+          <div class="panel-section">
+            <div class="section-header-row">
+              <h3 class="section-title" id="secThemeTitle">ثيمات الخريطة الكارتوغرافية</h3>
+              <span class="theme-count-pill" id="themeCountPill">35 ثيم أصلي</span>
+            </div>
+
+            <!-- Instant Search Bar -->
+            <div class="field" style="margin-bottom: 8px;">
+              <div class="input-wrap">
+                <input type="text" id="inpThemeSearch" placeholder="ابحث عن ثيم بالاسم أو اللون...">
+              </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="theme-categories" id="themeCategories">
+              <button class="theme-cat-btn active" data-cat="all" id="catAll">الكل (35)</button>
+              <button class="theme-cat-btn" data-cat="dark" id="catDark">داكن وفخم</button>
+              <button class="theme-cat-btn" data-cat="earth" id="catEarth">طبيعي وترابي</button>
+              <button class="theme-cat-btn" data-cat="light" id="catLight">كلاسيكي وفاتح</button>
+              <button class="theme-cat-btn" data-cat="vibrant" id="catVibrant">فني ونيون</button>
+            </div>
+
+            <!-- Grid of Distinctive Theme Cards -->
+            <div class="themes-grid" id="themesGrid">
+              <!-- Dynamically populated via app.js -->
+            </div>
+
+            <!-- Custom Tint Color Adjustment -->
+            <div class="field" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+              <label for="inpTint" id="lblTint">تعديل لون التلوين المباشر (Tint Color)</label>
+              <div class="color-picker-row">
+                <input type="color" id="inpTint" value="#0a192f">
+                <span class="color-val-label" id="lblTintVal">#0a192f</span>
+              </div>
+            </div>
+            <div class="hint" id="themeHint">تم نقل جميع الثيمات الكارتوغرافية الأصلية مع تناسق ألوان الشوارع والمسطحات واليابسة.</div>
+          </div>
+        </div>
+
+        <!-- 3. Typography Panel -->
+        <div class="tab-panel" id="panel-typography">
+          <div class="panel-section">
+            <h3 class="section-title" id="secTypeTitle">خط وعناوين الملصق</h3>
+            <div class="field">
+              <label for="selFont" id="lblFont">خط كتابة الملصق الرئيسي</label>
+              <select id="selFont"></select>
+            </div>
+            <div class="field-checks">
+              <label class="check">
+                <input type="checkbox" id="chkCity" checked>
+                <span id="lblChkCity">عرض اسم المدينة</span>
+              </label>
+              <label class="check">
+                <input type="checkbox" id="chkCountry" checked>
+                <span id="lblChkCountry">عرض اسم الدولة</span>
+              </label>
+            </div>
+            <div class="field" style="margin-top: 8px;">
+              <label for="inpCustomTitle" id="lblCustomTitle">تعديل اسم المدينة المعروض</label>
+              <input type="text" id="inpCustomTitle" placeholder="اسم المدينة المخصص">
+            </div>
+            <div class="field">
+              <label for="inpCustomSubtitle" id="lblCustomSubtitle">تعديل اسم الدولة أو النص الثانوي</label>
+              <input type="text" id="inpCustomSubtitle" placeholder="اسم الدولة المخصص">
+            </div>
+            <div class="field">
+              <label for="rngLetterSpacing" id="lblLetterSpacing">تباعد الحروف (Letter Spacing)</label>
+              <div class="input-wrap" style="align-items: center; gap: 10px;">
+                <input type="range" id="rngLetterSpacing" min="0" max="0.6" step="0.02" value="0.22" style="flex:1; accent-color: var(--color-accent);">
+                <span id="lblLetterSpacingVal" class="color-val-label">0.22em</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="selTextTransform" id="lblTextTransform">حالة الأحرف (Text Transform)</label>
+              <select id="selTextTransform">
+                <option value="uppercase">أحرف كبيرة (UPPERCASE)</option>
+                <option value="none">حالة النص الأصلية (Normal)</option>
+                <option value="capitalize">بداية كل كلمة حرف كبير (Capitalize)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="selTitleSize" id="lblTitleSize">حجم العناوين الرئيسية</label>
+              <select id="selTitleSize">
+                <option value="0.85">صغير ومضغوط (Compact)</option>
+                <option value="1.0" selected>الحجم القياسي (Standard)</option>
+                <option value="1.25">كبير وبارز (Large & Bold)</option>
+                <option value="1.5">ضخم للملصقات (Massive)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel-section" style="margin-top: 8px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+            <h3 class="section-title" id="secMapTypeTitle">خط ونصوص الخريطة (Map Typography)</h3>
+            <div class="field">
+              <label for="selMapFont" id="lblMapFont">نوع خط نصوص الخريطة</label>
+              <select id="selMapFont">
+                <option value="Noto Sans Regular">Noto Sans (عادي متوازن)</option>
+                <option value="Noto Sans Bold">Noto Sans Bold (عريض وبارز)</option>
+                <option value="Noto Sans Italic">Noto Sans Italic (مائل كارتوغرافي)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="selMapLang" id="lblMapLang">لغة نصوص ومعالم الخريطة</label>
+              <select id="selMapLang">
+                <option value="ar">العربية أولاً (Arabic Preferred)</option>
+                <option value="en">الإنجليزية أولاً (English Preferred)</option>
+                <option value="native">الاسم المحلي للبلد (Native Language)</option>
+              </select>
+            </div>
+            <div class="hint" id="typeHint">تم تفعيل المحاذاة والتشكيل السليم للحروف العربية لضمان اتصال الكلمات بدون تقطيع.</div>
+          </div>
+        </div>
+
+        <!-- 4. Layers Panel -->
+        <div class="tab-panel" id="panel-layers">
+          <div class="panel-section">
+            <h3 class="section-title" id="secLayersTitle">الطبقات وعناصر الخريطة</h3>
+            <div class="layers-list">
+              <label class="layer-item">
+                <input type="checkbox" id="chkRoads" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblRoads">شبكة الطرق والشوارع</span>
+                  <span class="layer-desc" id="descRoads">الطرق السريعة، الرئيسية، والفرعية</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkWater" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblWater">المسطحات المائية</span>
+                  <span class="layer-desc" id="descWater">البحار، البحيرات، الأنهار، والقنوات</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkParks" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblParks">المساحات الخضراء والحدائق</span>
+                  <span class="layer-desc" id="descParks">الغابات، المحميات، والمنتزهات</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkBuildings" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblBuildings">المباني والمجسمات المعمارية</span>
+                  <span class="layer-desc" id="descBuildings">كتل المباني والمجمعات</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkRail" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblRail">سكك الحديد والقطارات</span>
+                  <span class="layer-desc" id="descRail">الخطوط الحديدية ومحطات القطارات</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkAeroway" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblAeroway">المطارات والمسارات الجوية</span>
+                  <span class="layer-desc" id="descAeroway">مدرجات المطارات والملاحة الجوية</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkLanduse" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblLanduse">استخدامات الأراضي والمناطق السكنية</span>
+                  <span class="layer-desc" id="descLanduse">المناطق العمرانية والصناعية</span>
+                </div>
+              </label>
+              <label class="layer-item">
+                <input type="checkbox" id="chkWaterway" checked>
+                <div class="layer-info">
+                  <span class="layer-name" id="lblWaterway">الأنهار والمسارات المائية الدقيقة</span>
+                  <span class="layer-desc" id="descWaterway">الجداول، الأنهار والترع المائية</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Markers Panel -->
+        <div class="tab-panel" id="panel-markers">
+          <div class="panel-section">
+            <h3 class="section-title" id="secMarkersTitle">إضافة العلامات التذكارية</h3>
+            <div class="field">
+              <label for="selMarker" id="lblMarkerIcon">رمز العلامة</label>
+              <select id="selMarker"></select>
+            </div>
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" id="chkMarkersEdit" checked>
+                <span id="lblChkMarkersEdit">تفعيل وضع تعديل العلامات</span>
+              </label>
+            </div>
+            <div class="field">
+              <button class="btn btn-ghost w-full" id="btnClearMarkers">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span id="btnClearMarkersText">حذف جميع العلامات</span>
+              </button>
+            </div>
+            <div class="hint" id="markersHint">انقر على أي نقطة بالخريطة لوضع علامة؛ انقر زر الفأرة الأيمن لإزالتها؛ واسحبها لتغيير موقعها.</div>
+          </div>
+        </div>
+
+        <!-- 6. Layout & Export Panel -->
+        <div class="tab-panel" id="panel-export">
+          <div class="panel-section">
+            <h3 class="section-title" id="secExportTitle">أبعاد الملصق وتصدير الطباعة</h3>
+            <div class="field">
+              <label for="selLayout" id="lblLayout">مقاس الورق / الملصق</label>
+              <select id="selLayout"></select>
+            </div>
+            <div class="field">
+              <label for="selExport" id="lblExportFmt">صيغة الملف</label>
+              <select id="selExport"></select>
+            </div>
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" id="chkHighRes" checked>
+                <span id="lblHighRes">دقة طباعة فائقة (Ultra-Res 2×)</span>
+              </label>
+            </div>
+            <button class="btn btn-primary w-full" id="btnExport" style="margin-top: 10px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="btnExportText">تحميل الملصق كصورة عالية الدقة</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metadata Card pinned at bottom of sidebar -->
+        <div class="sidebar-meta">
+          <div class="meta-row"><span class="meta-lbl" id="mLocLabel">الموقع:</span> <span class="meta-val" id="metaLoc">—</span></div>
+          <div class="meta-row"><span class="meta-lbl" id="mCoordsLabel">الإحداثيات:</span> <span class="meta-val" id="metaCoords">—</span></div>
+          <div class="meta-row"><span class="meta-lbl" id="mThemeLabel">الثيم:</span> <span class="meta-val" id="metaTheme">—</span></div>
+          <div class="meta-row"><span class="meta-lbl" id="mMarkersLabel">العلامات:</span> <span class="meta-val" id="metaMarkers">0</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Canvas Workspace -->
+    <main class="app-workspace">
+      <div class="poster-viewport" id="posterViewport">
+        <div class="poster" id="poster">
+          <div class="poster-map-wrap" id="posterMapWrap">
+            <div id="map"></div>
+            <div class="map-tint" id="mapTint"></div>
+          </div>
+          <div class="poster-overlay" id="posterOverlay">
+            <div class="poster-text" id="posterText"></div>
+              <div class="poster-attrib" id="posterAttrib">
+                © OpenStreetMap contributors · صُنع بواسطة CartoCraft كارتوكرافت
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Map Toolbar -->
+      <div class="floating-toolbar" id="toolbar">
+        <button class="tool-btn" id="btnZoomIn" title="تكبير">+</button>
+        <button class="tool-btn" id="btnZoomOut" title="تصغير">−</button>
+        <div class="tool-sep"></div>
+        <button class="tool-btn" id="btnRecenter" title="توسيط الخريطة">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+        </button>
+        <button class="tool-btn" id="btnTilt" title="إمالة 3D">
+          <span style="font-weight:700;font-size:12px;">3D</span>
+        </button>
+        <button class="tool-btn" id="btnFull" title="ملء الشاشة">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 3h-3a2 2 0 0 0-2 2v3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
