@@ -1128,6 +1128,9 @@ function switchTheme(themeId) {
       mapCanvas.style.transition = "";
     }
   }, 900);
+
+  // Update theme card active state
+  renderThemeCards();
 }
 
 let currentThemeCat = "all";
@@ -1190,7 +1193,68 @@ function renderThemeCards(filterCat = currentThemeCat, searchQuery = currentThem
     })
     .join("");
 
+  
+  // Stagger index for entrance animation
+  const staggerCount = Math.min(filtered.length, 10);
+  grid.innerHTML = filtered
+    .map((th, index) => {
+      const isActive = th.id === state.themeId;
+      const land = th.map?.land || th.ui.bg;
+      const water = th.map?.water || "#a8c4c4";
+      const parks = th.map?.parks || land;
+      const roadMajor = th.map?.roads?.major || th.ui.text;
+      const roadMinor = th.map?.roads?.minor_low || roadMajor;
+      const textCol = th.ui.text;
+
+      // Calculate delay based on index for staggered entrance
+      const delay = index * 80;
+      const style = `animation: themeCardIn 0.5s ease ${delay}ms forwards`;
+
+      return `
+        <div class="theme-card ${isActive ? "active" : ""}" data-theme-id="${th.id}" style="${style}">
+          <div class="theme-active-badge">✓</div>
+          <div class="theme-swatch-bar">
+            <div class="theme-swatch-seg" style="background:${land};" title="Land: ${land}"></div>
+            <div class="theme-swatch-seg" style="background:${water};" title="Water: ${water}"></div>
+            <div class="theme-swatch-seg" style="background:${parks};" title="Parks: ${parks}"></div>
+            <div class="theme-swatch-seg" style="background:${roadMajor};" title="Roads: ${roadMajor}"></div>
+            <div class="theme-swatch-seg" style="background:${roadMinor};" title="Roads: ${roadMinor}"></div>
+            <div class="theme-swatch-seg" style="background:${textCol};" title="Text: ${textCol}"></div>
+          </div>
+          <div class="theme-card-info">
+            <span class="theme-card-name">${state.lang === "ar" ? th.arName : th.name}</span>
+            <span class="theme-card-sub">${th.name}</span>
+            <span class="theme-card-desc">${state.lang === "ar" ? th.arDesc : th.description}</span>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  // Add keyframes if not already added (only for first render)
+  if (grid.querySelectorAll(".theme-card").length > 0) {
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+      @keyframes themeCardIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+  }
+
   grid.querySelectorAll(".theme-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const themeId = card.dataset.themeId;
+      switchTheme(themeId);
+    });
+  });grid.querySelectorAll(".theme-card").forEach((card) => {
     card.addEventListener("click", () => {
       const themeId = card.dataset.themeId;
       switchTheme(themeId);
