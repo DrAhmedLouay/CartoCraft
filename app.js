@@ -994,8 +994,362 @@ function toast(msg) {
 }
 
 // ==========================================
-// 6. MapLibre GL JS Engine
+// 6. MapLibre GL JS Engine — Vector Styling (TerraInk-accurate)
 // ==========================================
+
+const OPENFREEMAP_SOURCE = "https://tiles.openfreemap.org/planet";
+const SOURCE_ID = "openfreemap";
+const SOURCE_MAX_ZOOM = 14;
+
+const LAYER_CLASSES = {
+  roads: {
+    major: ["motorway"],
+    minor_high: ["primary", "primary_link", "secondary", "secondary_link", "motorway_link", "trunk", "trunk_link"],
+    minor_mid: ["tertiary", "tertiary_link", "minor"],
+    minor_low: ["residential", "living_street", "unclassified", "road", "street", "street_limited", "service"],
+    path: ["path", "pedestrian", "cycleway", "track"],
+  },
+  rail: ["rail", "transit"],
+  aeroway: ["aeroway"],
+  water: ["water"],
+  waterway: ["waterway"],
+  parks: ["park", "landcover_wood", "landcover_grass", "landcover_scrub", "landuse_park", "landuse_nature_reserve"],
+  landuse: ["landuse_residential", "landuse_commercial", "landuse_industrial", "landuse_institutional"],
+  buildings: ["building"],
+  aeroway_areas: ["aeroway_area"],
+  landcover: ["landcover"],
+};
+
+const ROAD_WIDTH_STOPS = {
+  major: [[0, 0.36], [3, 0.52], [9, 1.1], [14, 2.05], [18, 3.3]],
+  minor_high: [[0, 0.18], [4, 0.3], [8, 0.48], [11, 0.7], [14, 1.1], [18, 2.0]],
+  minor_mid: [[6, 0.34], [10, 0.62], [14, 1.2], [18, 2.35]],
+  minor_low: [[6, 0.24], [10, 0.44], [14, 0.84], [18, 1.65]],
+  path: [[5, 0.06], [8, 0.1], [11, 0.2], [14, 0.3], [18, 0.5]],
+};
+
+const OVERZOOM_LINE_WIDTH_SCALE = Math.pow(1.2, 0.8);
+
+function widthExpr(stops, scale = 1) {
+  const scaled = stops.map(([z, w]) => [z, w * scale * OVERZOOM_LINE_WIDTH_SCALE]);
+  const flat = scaled.flatMap(([z, w]) => [z, w]);
+  return ["interpolate", ["linear"], ["zoom"], ...flat];
+}
+
+function opacityExpr(stops) {
+  const flat = stops.flatMap(([z, o]) => [z, o]);
+  return ["interpolate", ["linear"], ["zoom"], ...flat];
+}
+
+function lineClassFilter(classes) {
+  return ["all", ["==", "$type", "LineString"], ["match", ["get", "class"], classes, true, false]];
+}
+
+function polygonClassFilter(classes) {
+  return ["all", ["==", "$type", "Polygon"], ["match", ["get", "class"], classes, true, false]];
+}
+
+function generateMapStyle(theme) {
+  const t = theme.map;
+  const ui = theme.ui;
+
+  return {
+    version: 8,
+    name: theme.name,
+    metadata: { "mapbox:autocomposite": true },
+    sources: {
+      [SOURCE_ID]: {
+        type: "vector",
+        url: OPENFREEMAP_SOURCE,
+        maxzoom: SOURCE_MAX_ZOOM,
+        attribution: "© OpenStreetMap contributors · Tiles via OpenFreeMap",
+      },
+    },
+    glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+    layers: [
+      // Background
+      {
+        id: "background",
+        type: "background",
+        paint: { "background-color": t.land },
+      },
+
+      // Water
+      {
+        id: "water",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "water",
+        filter: ["==", "$type", "Polygon"],
+        paint: {
+          "fill-color": t.water,
+          "fill-opacity": 1,
+        },
+      },
+
+      // Waterway lines
+      {
+        id: "waterway",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "waterway",
+        filter: ["==", "$type", "LineString"],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.waterway,
+          "line-width": widthExpr([[0, 0.2], [6, 0.34], [12, 0.8], [18, 2.4]]),
+          "line-opacity": 0.8,
+        },
+      },
+
+      // Parks / Landcover
+      {
+        id: "parks",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "landcover",
+        filter: polygonClassFilter(["park", "wood", "grass", "scrub", "wetland", "nature_reserve", "golf_course"]),
+        paint: { "fill-color": t.parks, "fill-opacity": 0.9 },
+      },
+      {
+        id: "landuse_park",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "landuse",
+        filter: polygonClassFilter(["park", "nature_reserve", "golf_course"]),
+        paint: { "fill-color": t.parks, "fill-opacity": 0.9 },
+      },
+
+      // Landuse areas
+      {
+        id: "landuse_residential",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "landuse",
+        filter: polygonClassFilter(["residential", "commercial", "industrial", "institutional"]),
+        paint: { "fill-color": t.landcover || t.land, "fill-opacity": 0.6 },
+      },
+
+      // Aeroway
+      {
+        id: "aeroway",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "aeroway",
+        filter: ["==", "$type", "Polygon"],
+        paint: { "fill-color": t.aeroway || t.land, "fill-opacity": 0.8 },
+      },
+
+      // Rail
+      {
+        id: "rail",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(["rail", "transit"]),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.rail,
+          "line-width": widthExpr([[3, 0.4], [6, 0.7], [10, 1], [18, 1.5]]),
+          "line-opacity": 0.7,
+        },
+      },
+
+      // Aeroway lines
+      {
+        id: "aeroway_lines",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "aeroway",
+        filter: ["==", "$type", "LineString"],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.aeroway || t.rail,
+          "line-width": widthExpr([[3, 0.3], [6, 0.5], [10, 0.8], [18, 1.2]]),
+          "line-opacity": 0.6,
+        },
+      },
+
+      // Roads - Major (motorway)
+      {
+        id: "road_major",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.major),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.major,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.major),
+        },
+      },
+
+      // Roads - Minor High (primary, secondary, trunk)
+      {
+        id: "road_minor_high",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.minor_high),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.minor_high,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.minor_high),
+        },
+      },
+
+      // Roads - Minor Mid (tertiary)
+      {
+        id: "road_minor_mid",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.minor_mid),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.minor_mid,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.minor_mid),
+        },
+      },
+
+      // Roads - Minor Low (residential, service)
+      {
+        id: "road_minor_low",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.minor_low),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.minor_low,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.minor_low),
+        },
+      },
+
+      // Roads - Paths
+      {
+        id: "road_path",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.path),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.path,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.path),
+          "line-opacity": 0.7,
+        },
+      },
+
+      // Road outlines (casing) for major roads
+      {
+        id: "road_major_casing",
+        type: "line",
+        source: SOURCE_ID,
+        "source-layer": "transportation",
+        filter: lineClassFilter(LAYER_CLASSES.roads.major),
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": t.roads.outline || t.land,
+          "line-width": widthExpr(ROAD_WIDTH_STOPS.major, 1.45),
+        },
+      },
+
+      // Buildings
+      {
+        id: "building",
+        type: "fill-extrusion",
+        source: SOURCE_ID,
+        "source-layer": "building",
+        filter: ["==", "$type", "Polygon"],
+        paint: {
+          "fill-extrusion-color": t.buildings,
+          "fill-extrusion-height": ["interpolate", ["linear"], ["zoom"], 14, 0, 15.5, ["*", ["get", "height"], 0.5], 16, ["get", "height"]],
+          "fill-extrusion-base": ["interpolate", ["linear"], ["zoom"], 14, 0, 15.5, ["*", ["get", "min_height"], 0.5], 16, ["get", "min_height"]],
+          "fill-extrusion-opacity": 0.9,
+        },
+        minzoom: 14,
+      },
+
+      // Building footprints (low zoom)
+      {
+        id: "building_footprint",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "building",
+        filter: ["==", "$type", "Polygon"],
+        paint: { "fill-color": t.buildings, "fill-opacity": 0.8 },
+        maxzoom: 14,
+      },
+
+      // Landcover (grass, wood, etc.) - low zoom fallback
+      {
+        id: "landcover_wood",
+        type: "fill",
+        source: SOURCE_ID,
+        "source-layer": "landcover",
+        filter: polygonClassFilter(["wood", "forest"]),
+        paint: { "fill-color": t.landcover || t.parks, "fill-opacity": 0.7 },
+      },
+    ],
+  };
+}
+
+function applyTheme(theme) {
+  if (!state.map) return;
+  
+  const newStyle = generateMapStyle(theme);
+  
+  try {
+    state.map.setStyle(newStyle);
+    state.currentLoadedStyleUrl = "generated";
+    state.isStyleLoaded = false;
+    
+    state.map.once("style.load", () => {
+      state.isStyleLoaded = true;
+      applyVectorLayers();
+      applyMapFont(state.mapFont);
+      applyMapLanguage(state.mapLang);
+      applyThemeVisuals();
+    });
+  } catch (err) {
+    console.error("Style switch failed:", err);
+  }
+}
+
+function applyThemeVisuals() {
+  const theme = THEMES.find((th) => th.id === state.themeId) || THEMES[0];
+  const mapCanvas = document.getElementById("map");
+  const tintEl = document.getElementById("mapTint");
+  const posterEl = document.getElementById("poster");
+  const posterText = document.getElementById("posterText");
+
+  if (posterEl) {
+    posterEl.style.backgroundColor = theme.ui.bg;
+  }
+
+  if (posterText) {
+    posterText.style.color = theme.ui.text;
+    if (theme.isDark) {
+      posterText.classList.remove("theme-light");
+      posterText.style.filter = "drop-shadow(0 2px 10px rgba(0,0,0,0.9))";
+    } else {
+      posterText.classList.add("theme-light");
+      posterText.style.filter = "drop-shadow(0 1px 4px rgba(255,255,255,0.8))";
+    }
+  }
+
+  if (tintEl) {
+    tintEl.style.backgroundColor = state.tintColor || theme.ui.bg;
+    tintEl.style.mixBlendMode = theme.mix || "multiply";
+    tintEl.style.opacity = theme.id === "carrara" ? "0.08" : "0.32";
+  }
+
+  document.querySelectorAll(".theme-card").forEach((c) => {
+    c.classList.toggle("active", c.dataset.themeId === state.themeId);
+  });
+}
+
 function initMapEngine() {
   // Register Mapbox GL RTL Text plugin for proper Arabic text shaping on the map
   if (typeof maplibregl !== "undefined" && maplibregl.setRTLTextPlugin) {
@@ -1004,30 +1358,26 @@ function initMapEngine() {
       if (rtlStatus === "unavailable") {
         maplibregl.setRTLTextPlugin(
           "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js",
-          (err) => {
-            if (err) console.warn("RTL text plugin notice:", err);
-          },
+          (err) => { if (err) console.warn("RTL text plugin notice:", err); },
           true
         );
       }
-    } catch (e) {
-      console.warn("RTL text plugin check:", e);
-    }
+    } catch (e) { console.warn("RTL text plugin check:", e); }
   }
 
   const initialTheme = THEMES.find((th) => th.id === state.themeId) || THEMES[0];
-  state.currentLoadedStyleUrl = initialTheme.styleUrl;
+  const initialStyle = generateMapStyle(initialTheme);
 
   try {
     state.map = new maplibregl.Map({
       container: "map",
-      style: initialTheme.styleUrl,
+      style: initialStyle,
       center: [state.lng, state.lat],
       zoom: state.zoom,
       bearing: state.bearing,
       pitch: state.pitch,
       preserveDrawingBuffer: true,
-      attributionControl: false
+      attributionControl: false,
     });
 
     state.map.on("load", () => {
@@ -1049,13 +1399,11 @@ function initMapEngine() {
       applyThemeVisuals();
     });
 
-    // Map Click: drop marker in edit mode
     state.map.on("click", (e) => {
       if (!state.markersEdit) return;
       dropMarkerAt(e.lngLat.lat, e.lngLat.lng);
     });
 
-    // Update coordinates & subtitle on move end
     state.map.on("moveend", () => {
       const center = state.map.getCenter();
       state.lat = center.lat;
@@ -1097,72 +1445,47 @@ function initRasterFallback() {
   state.isStyleLoaded = true;
 }
 
-// ==========================================
-// 7. Vector Layers & Theme Styling
-// ==========================================
 function applyVectorLayers() {
   if (!state.map || !state.isStyleLoaded) return;
   const style = state.map.getStyle();
   if (!style || !style.layers) return;
 
   style.layers.forEach((l) => {
-    const srcLayer = l["source-layer"] || "";
-    const id = l.id.toLowerCase();
+    const id = l.id;
 
     // Roads
-    if (srcLayer === "transportation" || id.includes("road") || id.includes("highway") || id.includes("bridge") || id.includes("tunnel")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.roads ? "visible" : "none");
-      } catch (e) {}
+    if (id === "road_major" || id === "road_minor_high" || id === "road_minor_mid" || id === "road_minor_low" || id === "road_path" || id === "road_major_casing") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.roads ? "visible" : "none"); } catch (e) {}
     }
 
     // Water
-    if (srcLayer === "water" || srcLayer === "waterway" || id.includes("water")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.water ? "visible" : "none");
-      } catch (e) {}
+    if (id === "water" || id === "waterway") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.water ? "visible" : "none"); } catch (e) {}
     }
 
     // Parks / Landcover
-    if (srcLayer === "park" || srcLayer === "landcover" || srcLayer === "landuse" || id.includes("park") || id.includes("grass") || id.includes("wood")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.parks ? "visible" : "none");
-      } catch (e) {}
+    if (id === "parks" || id === "landuse_park" || id === "landuse_residential" || id === "landcover_wood") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.parks ? "visible" : "none"); } catch (e) {}
     }
 
     // Buildings
-    if (srcLayer === "building" || id.includes("building")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.buildings ? "visible" : "none");
-      } catch (e) {}
+    if (id === "building" || id === "building_footprint") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.buildings ? "visible" : "none"); } catch (e) {}
     }
 
     // Railways
-    if (srcLayer === "railway" || id.includes("rail")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.rail ? "visible" : "none");
-      } catch (e) {}
+    if (id === "rail") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.rail ? "visible" : "none"); } catch (e) {}
     }
 
     // Aeroways
-    if (srcLayer === "aeroway" || id.includes("aeroway") || id.includes("airport")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.aeroway ? "visible" : "none");
-      } catch (e) {}
+    if (id === "aeroway" || id === "aeroway_lines") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.aeroway ? "visible" : "none"); } catch (e) {}
     }
 
     // Landuse
-    if (srcLayer === "landuse" || id.includes("landuse")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.landuse ? "visible" : "none");
-      } catch (e) {}
-    }
-
-    // Waterway
-    if (srcLayer === "waterway" || id.includes("waterway")) {
-      try {
-        state.map.setLayoutProperty(l.id, "visibility", state.layers.waterway ? "visible" : "none");
-      } catch (e) {}
+    if (id === "landuse_residential") {
+      try { state.map.setLayoutProperty(id, "visibility", state.layers.landuse ? "visible" : "none"); } catch (e) {}
     }
   });
 }
@@ -1258,13 +1581,7 @@ function switchTheme(themeId) {
   if (inpTint) inpTint.value = theme.ui.bg;
   if (lblTintVal) lblTintVal.textContent = theme.ui.bg;
 
-  if (state.map && theme.styleUrl !== state.currentLoadedStyleUrl) {
-    state.currentLoadedStyleUrl = theme.styleUrl;
-    state.map.setStyle(theme.styleUrl);
-  } else {
-    applyThemeVisuals();
-  }
-
+  applyTheme(theme);
   updateMetaDisplay();
 }
 
