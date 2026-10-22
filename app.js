@@ -2271,6 +2271,13 @@ function initApp() {
   const toolbar = document.getElementById("toolbar");
   if (toolbar) toolbar.style.display = "flex";
 
+  // Force map resize after layout settles
+  setTimeout(() => {
+    if (state.map) {
+      state.map.resize();
+    }
+  }, 100);
+
   // Initial geocode lookup
   reverseGeocode(state.lat, state.lng);
 }
