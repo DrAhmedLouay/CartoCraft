@@ -1497,6 +1497,31 @@ async function exportPosterImage() {
   try {
     const exportScale = state.highRes ? 2 : 1.5;
 
+    // Capture MapLibre WebGL canvas cleanly if map exists
+    let mapImgElement = null;
+    if (state.map) {
+      try {
+        const mapCanvas = state.map.getCanvas();
+        const dataUrl = mapCanvas.toDataURL("image/png");
+        mapImgElement = document.createElement("img");
+        mapImgElement.src = dataUrl;
+        mapImgElement.style.width = "100%";
+        mapImgElement.style.height = "100%";
+        mapImgElement.style.position = "absolute";
+        mapImgElement.style.top = "0";
+        mapImgElement.style.left = "0";
+        mapImgElement.style.zIndex = "10";
+        mapImgElement.className = "temp-map-snapshot";
+        
+        const mapContainer = document.getElementById("map");
+        if (mapContainer) {
+          mapContainer.appendChild(mapImgElement);
+        }
+      } catch (e) {
+        console.warn("Could not snapshot map canvas directly:", e);
+      }
+    }
+
     const canvas = await html2canvas(posterEl, {
       scale: exportScale,
       useCORS: true,
@@ -1505,12 +1530,20 @@ async function exportPosterImage() {
       logging: false
     });
 
+    // Clean up temporary map snapshot image
+    if (mapImgElement && mapImgElement.parentNode) {
+      mapImgElement.parentNode.removeChild(mapImgElement);
+    }
+
     const cleanCity = (state.customCity || state.city || "map").replace(/\s+/g, "_");
-    const fileName = `terraink_${cleanCity}_${state.layoutId}_${Date.now()}.png`;
+    const fmt = state.exportFmt || "png";
+    const mimeType = fmt === "jpeg" ? "image/jpeg" : "image/png";
+    const ext = fmt === "jpeg" ? "jpg" : "png";
+    const fileName = `terraink_${cleanCity}_${state.layoutId}_${Date.now()}.${ext}`;
 
     const link = document.createElement("a");
     link.download = fileName;
-    link.href = canvas.toDataURL("image/png");
+    link.href = canvas.toDataURL(mimeType, 0.95);
     link.click();
 
     toast(t("toastExportDone"));
