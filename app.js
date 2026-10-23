@@ -929,16 +929,44 @@ function applyCustomColorEditor() {
   const customWater = document.getElementById("inpWaterColor")?.value || theme.map.water;
   const customText = document.getElementById("inpTextColor")?.value || theme.ui.text;
 
+  // Read opacity values (0-100, convert to 0-1)
+  const bgOpacity = (parseInt(document.getElementById("inpBgOpacity")?.value, 10) || 100) / 100;
+  const roadMajOpacity = (parseInt(document.getElementById("inpRoadMajorOpacity")?.value, 10) || 100) / 100;
+  const roadMinOpacity = (parseInt(document.getElementById("inpRoadMinorOpacity")?.value, 10) || 100) / 100;
+  const waterOpacity = (parseInt(document.getElementById("inpWaterOpacity")?.value, 10) || 100) / 100;
+  const textOpacity = (parseInt(document.getElementById("inpTextOpacity")?.value, 10) || 100) / 100;
+
   // 1. Instant runtime update on active map layers if loaded
   if (state.map && state.isStyleLoaded) {
     try {
-      if (state.map.getLayer("background")) state.map.setPaintProperty("background", "background-color", customBg);
-      if (state.map.getLayer("water")) state.map.setPaintProperty("water", "fill-color", customWater);
-      if (state.map.getLayer("waterway")) state.map.setPaintProperty("waterway", "line-color", customWater);
-      if (state.map.getLayer("road_major")) state.map.setPaintProperty("road_major", "line-color", customRoadMaj);
-      if (state.map.getLayer("road_minor_high")) state.map.setPaintProperty("road_minor_high", "line-color", customRoadMaj);
-      if (state.map.getLayer("road_minor_mid")) state.map.setPaintProperty("road_minor_mid", "line-color", customRoadMin);
-      if (state.map.getLayer("road_minor_low")) state.map.setPaintProperty("road_minor_low", "line-color", customRoadMin);
+      if (state.map.getLayer("background")) {
+        state.map.setPaintProperty("background", "background-color", customBg);
+        state.map.setPaintProperty("background", "background-opacity", bgOpacity);
+      }
+      if (state.map.getLayer("water")) {
+        state.map.setPaintProperty("water", "fill-color", customWater);
+        state.map.setPaintProperty("water", "fill-opacity", waterOpacity);
+      }
+      if (state.map.getLayer("waterway")) {
+        state.map.setPaintProperty("waterway", "line-color", customWater);
+        state.map.setPaintProperty("waterway", "line-opacity", waterOpacity);
+      }
+      if (state.map.getLayer("road_major")) {
+        state.map.setPaintProperty("road_major", "line-color", customRoadMaj);
+        state.map.setPaintProperty("road_major", "line-opacity", roadMajOpacity);
+      }
+      if (state.map.getLayer("road_minor_high")) {
+        state.map.setPaintProperty("road_minor_high", "line-color", customRoadMaj);
+        state.map.setPaintProperty("road_minor_high", "line-opacity", roadMajOpacity);
+      }
+      if (state.map.getLayer("road_minor_mid")) {
+        state.map.setPaintProperty("road_minor_mid", "line-color", customRoadMin);
+        state.map.setPaintProperty("road_minor_mid", "line-opacity", roadMinOpacity);
+      }
+      if (state.map.getLayer("road_minor_low")) {
+        state.map.setPaintProperty("road_minor_low", "line-color", customRoadMin);
+        state.map.setPaintProperty("road_minor_low", "line-opacity", roadMinOpacity);
+      }
     } catch (e) {
       console.warn("Runtime paint property update notice:", e);
     }
@@ -955,8 +983,14 @@ function applyCustomColorEditor() {
   customTheme.map.roads.minor_mid = customRoadMin;
   customTheme.map.roads.minor_low = customRoadMin;
 
+  // Store opacity in theme for persistence
+  customTheme.ui.bgOpacity = bgOpacity;
+  customTheme.ui.textOpacity = textOpacity;
+  customTheme.map.waterOpacity = waterOpacity;
+  customTheme.map.roads.opacity = roadMajOpacity;
+
   applyThemeVisuals();
-  toast(state.lang === "ar" ? "تم تطبيق الألوان المخصصة والخلفية بنجاح" : "Custom colors and background applied successfully");
+  toast(state.lang === "ar" ? "تم تطبيق الألوان والشفافية بنجاح" : "Custom colors and opacity applied successfully");
 }
 
 function initMapEngine() {
@@ -1182,6 +1216,18 @@ function switchTheme(themeId) {
   if (inpRoadMinor) { inpRoadMinor.value = roadMinVal; if (inpRoadMinor.nextElementSibling) inpRoadMinor.nextElementSibling.textContent = roadMinVal; }
   if (inpWaterColor) { inpWaterColor.value = waterVal; if (inpWaterColor.nextElementSibling) inpWaterColor.nextElementSibling.textContent = waterVal; }
   if (inpTextColor) { inpTextColor.value = textVal; if (inpTextColor.nextElementSibling) inpTextColor.nextElementSibling.textContent = textVal; }
+
+  // Reset opacity sliders to 100% on theme switch
+  const opacitySliders = [
+    "inpBgOpacity", "inpRoadMajorOpacity", "inpRoadMinorOpacity", 
+    "inpWaterOpacity", "inpTextOpacity"
+  ];
+  opacitySliders.forEach(id => {
+    const slider = document.getElementById(id);
+    const valSpan = document.getElementById(id.replace("inp", "val").replace("Opacity", "Opacity"));
+    if (slider) { slider.value = 100; }
+    if (valSpan) { valSpan.textContent = "100%"; }
+  });
 
   applyTheme(theme);
   updateMetaDisplay();
@@ -2064,6 +2110,21 @@ function wireEventListeners() {
         applyThemeVisuals();
       });
       input.addEventListener("change", () => {
+        applyCustomColorEditor();
+      });
+    }
+  });
+
+  // Color Editor Opacity Sliders
+  ["inpBgOpacity", "inpRoadMajorOpacity", "inpRoadMinorOpacity", "inpWaterOpacity", "inpTextOpacity"].forEach(id => {
+    const slider = document.getElementById(id);
+    const valSpan = document.getElementById(id.replace("inp", "val").replace("Opacity", "Opacity"));
+    if (slider) {
+      slider.addEventListener("input", (e) => {
+        if (valSpan) valSpan.textContent = e.target.value + "%";
+        applyThemeVisuals();
+      });
+      slider.addEventListener("change", () => {
         applyCustomColorEditor();
       });
     }
