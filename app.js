@@ -2079,12 +2079,7 @@ function wireEventListeners() {
   window.addEventListener("resize", () => {
     if (state.map) state.map.resize();
   });
-}
-
-// ==========================================
-// 14. Application Initialization
-// ==========================================
-
+  
   // ==========================================
   // Enhanced Interactive Animations
   // ==========================================
@@ -2217,7 +2212,7 @@ function wireEventListeners() {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
-  );
+  });
   
   // 9. Window Resize Handler for Map
   let resizeTimeout;
@@ -2228,7 +2223,7 @@ function wireEventListeners() {
         state.map.resize();
       }
     }, 250);
-  );
+  });  
   
   // 10. Theme Change Celebration Effect
   const originalSwitchTheme = switchTheme;
@@ -2260,6 +2255,11 @@ function wireEventListeners() {
     document.head.appendChild(celebrateStyle);
   }
 
+  
+  // ==========================================
+  // Application Initialization
+  // ==========================================
+}
 
 function initApp() {
   setLanguage("ar");
