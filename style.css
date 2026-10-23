@@ -1857,11 +1857,11 @@ input[type="checkbox"]:checked {
   }
 }
 
-/* App Footer Attribution - Top Right Corner */
+/* App Footer Attribution - Top Left Corner */
 .app-footer {
   position: fixed;
   top: 16px;
-  right: 16px;
+  left: 16px;
   padding: 8px 16px;
   background: rgba(15, 15, 35, 0.7);
   backdrop-filter: blur(10px);
