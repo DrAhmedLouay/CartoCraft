@@ -1494,6 +1494,8 @@ async function exportPosterImage() {
   if (btn) btn.disabled = true;
   if (quickBtn) quickBtn.disabled = true;
 
+  let canvas = null;
+
   try {
     const exportScale = state.highRes ? 2 : 1.5;
 
@@ -1522,19 +1524,46 @@ async function exportPosterImage() {
       }
     }
 
-    const canvas = await html2canvas(posterEl, {
-      scale: exportScale,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: null,
-      logging: false
-    });
+    if (typeof html2canvas !== "undefined") {
+      canvas = await html2canvas(posterEl, {
+        scale: exportScale,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false
+      });
+    }
 
     // Clean up temporary map snapshot image
     if (mapImgElement && mapImgElement.parentNode) {
       mapImgElement.parentNode.removeChild(mapImgElement);
     }
+  } catch (err) {
+    console.warn("html2canvas export encountered an issue, using direct map fallback:", err);
+  }
 
+  // Fallback: if html2canvas failed or wasn't available, export map canvas directly
+  if (!canvas && state.map) {
+    try {
+      const mapCanvas = state.map.getCanvas();
+      canvas = document.createElement("canvas");
+      canvas.width = mapCanvas.width;
+      canvas.height = mapCanvas.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(mapCanvas, 0, 0);
+    } catch (e) {
+      console.error("Fallback export failed:", e);
+    }
+  }
+
+  if (!canvas) {
+    toast(t("toastExportErr"));
+    if (btn) btn.disabled = false;
+    if (quickBtn) quickBtn.disabled = false;
+    return;
+  }
+
+  try {
     const cleanCity = (state.customCity || state.city || "map").replace(/\s+/g, "_");
     const fmt = state.exportFmt || "png";
     const mimeType = fmt === "jpeg" ? "image/jpeg" : "image/png";
@@ -1548,7 +1577,7 @@ async function exportPosterImage() {
 
     toast(t("toastExportDone"));
   } catch (err) {
-    console.error("Export failure:", err);
+    console.error("Download trigger failure:", err);
     toast(t("toastExportErr"));
   } finally {
     if (btn) btn.disabled = false;
