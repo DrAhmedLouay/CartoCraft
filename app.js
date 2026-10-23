@@ -36,7 +36,9 @@ const I18N = {
     lblLetterSpacing: "تباعد الحروف (Letter Spacing)",
     lblTextTransform: "حالة الأحرف (Text Transform)",
     lblTitleSize: "حجم العناوين الرئيسية (Title Size)",
-    lblTextPosition: "موضع النص على الملصق (Text Position)",
+     lblTextPosition: "موضع النص على الملصق (Text Position)",
+    lblTitleColor: "لون الخط العنواني (Title Font Color)",
+    lblSubtitleColor: "لون الخط الثانوي (Subtitle Font Color)",
     optUpper: "أحرف كبيرة (UPPERCASE)",
     optNone: "حالة النص الأصلية (Normal)",
     optCapitalize: "بداية كل كلمة حرف كبير (Capitalize)",
@@ -148,7 +150,9 @@ const I18N = {
     lblLetterSpacing: "Letter Spacing",
     lblTextTransform: "Text Transform",
     lblTitleSize: "Title Size",
-    lblTextPosition: "Text Position on Poster",
+     lblTextPosition: "Text Position on Poster",
+    lblTitleColor: "Title Font Color",
+    lblSubtitleColor: "Subtitle Font Color",
     optUpper: "UPPERCASE",
     optNone: "Normal (as written)",
     optCapitalize: "Capitalize Each Word",
@@ -315,8 +319,10 @@ let state = {
   mapLang: "ar",
   letterSpacing: 0.22,
   textTransform: "uppercase",
-  titleScale: 1.0,
+   titleScale: 1.0,
   textPosition: "top",
+  titleColor: "#ffffff",
+  subtitleColor: "#e8e8f0",
   layers: { roads: true, water: true, parks: true, buildings: true, rail: true, aeroway: true, landuse: true, waterway: true },
   markerIcon: "pin",
   markersEdit: true,
@@ -1404,14 +1410,14 @@ function renderPosterText() {
 
   let html = "";
   if (state.showCity && displayCity) {
-    html += `<span class="poster-title ${cityIsAr ? "is-arabic" : ""}">${displayCity}</span>`;
+    html += `<span class="poster-title ${cityIsAr ? "is-arabic" : ""}" style="color: ${state.titleColor}">${displayCity}</span>`;
   }
   if (state.showCountry && displayCountry) {
-    html += `<span class="poster-subtitle ${countryIsAr ? "is-arabic" : ""}">${displayCountry}</span>`;
+    html += `<span class="poster-subtitle ${countryIsAr ? "is-arabic" : ""}" style="color: ${state.subtitleColor}">${displayCountry}</span>`;
   }
   if ((state.showCity && displayCity) || (state.showCountry && displayCountry)) {
     html += `<div class="poster-divider"></div>`;
-    html += `<span class="poster-coords">${state.coordsFormatted}</span>`;
+    html += `<span class="poster-coords" style="color: ${state.subtitleColor}">${state.coordsFormatted}</span>`;
   }
 
   container.innerHTML = html;
@@ -1705,6 +1711,8 @@ function populateUI() {
   updateText("lblTextTransform", t("lblTextTransform"));
   updateText("lblTitleSize", t("lblTitleSize"));
   updateText("lblTextPosition", t("lblTextPosition"));
+  updateText("lblTitleColor", t("lblTitleColor"));
+  updateText("lblSubtitleColor", t("lblSubtitleColor"));
   updateText("optUpper", t("optUpper"));
   updateText("optNone", t("optNone"));
   updateText("optCapitalize", t("optCapitalize"));
@@ -1982,6 +1990,21 @@ function wireEventListeners() {
     state.textPosition = e.target.value;
     applyTextPosition();
   });
+
+  document.getElementById("inpTitleColor")?.addEventListener("input", (e) => {
+    state.titleColor = e.target.value;
+    const val = document.getElementById("lblTitleColorVal");
+    if (val) val.textContent = e.target.value;
+    renderPosterText();
+  });
+
+  document.getElementById("inpSubtitleColor")?.addEventListener("input", (e) => {
+    state.subtitleColor = e.target.value;
+    const val = document.getElementById("lblSubtitleColorVal");
+    if (val) val.textContent = e.target.value;
+    renderPosterText();
+  });
+
   document.getElementById("selMapFont")?.addEventListener("change", (e) => {
     applyMapFont(e.target.value);
   });
