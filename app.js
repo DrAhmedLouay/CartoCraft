@@ -1229,6 +1229,12 @@ function switchTheme(themeId) {
     if (valSpan) { valSpan.textContent = "100%"; }
   });
 
+  // Reset master opacity slider
+  const masterSlider = document.getElementById("inpMasterOpacity");
+  const masterVal = document.getElementById("valMasterOpacity");
+  if (masterSlider) masterSlider.value = 100;
+  if (masterVal) masterVal.textContent = "100%";
+
   applyTheme(theme);
   updateMetaDisplay();
 
@@ -2114,6 +2120,33 @@ function wireEventListeners() {
       });
     }
   });
+
+  // Master Opacity Slider (controls all colors at once)
+  const masterOpacitySlider = document.getElementById("inpMasterOpacity");
+  const masterOpacityVal = document.getElementById("valMasterOpacity");
+  if (masterOpacitySlider) {
+    masterOpacitySlider.addEventListener("input", (e) => {
+      const val = e.target.value;
+      if (masterOpacityVal) masterOpacityVal.textContent = val + "%";
+      
+      // Sync all individual opacity sliders
+      const opacitySliders = [
+        "inpBgOpacity", "inpRoadMajorOpacity", "inpRoadMinorOpacity", 
+        "inpWaterOpacity", "inpTextOpacity"
+      ];
+      opacitySliders.forEach(id => {
+        const slider = document.getElementById(id);
+        const valSpan = document.getElementById(id.replace("inp", "val").replace("Opacity", "Opacity"));
+        if (slider) slider.value = val;
+        if (valSpan) valSpan.textContent = val + "%";
+      });
+      
+      applyThemeVisuals();
+    });
+    masterOpacitySlider.addEventListener("change", () => {
+      applyCustomColorEditor();
+    });
+  }
 
   // Color Editor Opacity Sliders
   ["inpBgOpacity", "inpRoadMajorOpacity", "inpRoadMinorOpacity", "inpWaterOpacity", "inpTextOpacity"].forEach(id => {

@@ -200,6 +200,16 @@
           <div class="panel-section" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
             <h3 class="section-title" id="secColorTitle">محرر الألوان (Color Editor)</h3>
             <p class="color-editor-desc">تخصيص ألوان الثيم الحالي</p>
+            
+            <!-- Master Opacity Slider -->
+            <div class="master-opacity-control" style="margin-bottom: 16px; padding: 12px; background: rgba(168, 85, 247, 0.08); border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.2);">
+              <label for="inpMasterOpacity" class="color-label" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <span>الشفافية الشاملة (Master Opacity)</span>
+                <span class="opacity-value" id="valMasterOpacity" style="font-weight: 600; color: var(--color-accent);">100%</span>
+              </label>
+              <input type="range" id="inpMasterOpacity" min="0" max="100" step="1" value="100" class="opacity-slider" style="width: 100%; accent-color: var(--color-accent);" title="التحكم الشفاف لجميع الألوان">
+            </div>
+            
             <div class="color-palette">
               <div class="color-control">
                 <label for="inpBgColor" class="color-label">لون الخلفية</label>
