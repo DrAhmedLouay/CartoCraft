@@ -1857,3 +1857,34 @@ input[type="checkbox"]:checked {
   }
 }
 
+/* App Footer Attribution */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 12px 16px;
+  background: rgba(15, 15, 35, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  border-top: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.footer-text {
+  font-family: var(--font-display, "Cairo", sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c0c0e0;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+/* Hide footer when printing the poster */
+@media print {
+  .app-footer {
+    display: none !important;
+  }
+}
+
+

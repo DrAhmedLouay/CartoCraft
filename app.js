@@ -1793,6 +1793,14 @@ function setLanguage(lang) {
   state.lang = lang;
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+  const footer = document.getElementById("appFooter");
+  const footerText = document.querySelector(".footer-text");
+  if (footerText) {
+    const key = lang === "ar" ? "data-ar" : "data-en";
+    footerText.textContent = footerText.getAttribute(key) || "";
+  }
+
   populateUI();
   renderPosterText();
   updateMetaDisplay();
