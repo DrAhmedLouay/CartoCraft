@@ -929,7 +929,22 @@ function applyCustomColorEditor() {
   const customWater = document.getElementById("inpWaterColor")?.value || theme.map.water;
   const customText = document.getElementById("inpTextColor")?.value || theme.ui.text;
 
-  // Create a customized clone of the theme
+  // 1. Instant runtime update on active map layers if loaded
+  if (state.map && state.isStyleLoaded) {
+    try {
+      if (state.map.getLayer("background")) state.map.setPaintProperty("background", "background-color", customBg);
+      if (state.map.getLayer("water")) state.map.setPaintProperty("water", "fill-color", customWater);
+      if (state.map.getLayer("waterway")) state.map.setPaintProperty("waterway", "line-color", customWater);
+      if (state.map.getLayer("road_major")) state.map.setPaintProperty("road_major", "line-color", customRoadMaj);
+      if (state.map.getLayer("road_minor_high")) state.map.setPaintProperty("road_minor_high", "line-color", customRoadMaj);
+      if (state.map.getLayer("road_minor_mid")) state.map.setPaintProperty("road_minor_mid", "line-color", customRoadMin);
+      if (state.map.getLayer("road_minor_low")) state.map.setPaintProperty("road_minor_low", "line-color", customRoadMin);
+    } catch (e) {
+      console.warn("Runtime paint property update notice:", e);
+    }
+  }
+
+  // 2. Full theme sync
   const customTheme = JSON.parse(JSON.stringify(theme));
   customTheme.ui.bg = customBg;
   customTheme.ui.text = customText;
@@ -940,9 +955,8 @@ function applyCustomColorEditor() {
   customTheme.map.roads.minor_mid = customRoadMin;
   customTheme.map.roads.minor_low = customRoadMin;
 
-  applyTheme(customTheme);
   applyThemeVisuals();
-  toast(state.lang === "ar" ? "تم تطبيق الألوان المخصصة" : "Custom colors applied");
+  toast(state.lang === "ar" ? "تم تطبيق الألوان المخصصة والخلفية بنجاح" : "Custom colors and background applied successfully");
 }
 
 function initMapEngine() {
