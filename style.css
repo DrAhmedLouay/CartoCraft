@@ -1857,12 +1857,13 @@ input[type="checkbox"]:checked {
   }
 }
 
-/* App Footer Attribution - Top Left Corner */
+/* App Footer Attribution - Top Center */
 .app-footer {
   position: fixed;
   top: 16px;
-  left: 16px;
-  padding: 8px 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
   background: rgba(15, 15, 35, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(168, 85, 247, 0.2);
@@ -1872,11 +1873,11 @@ input[type="checkbox"]:checked {
 
 .footer-text {
   font-family: var(--font-display, "Cairo", sans-serif);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #c0c0e0;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #b0b0c0;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 6px rgba(168, 85, 247, 0.25);
 }
 
 /* Hide footer when printing the poster */
