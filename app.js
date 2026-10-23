@@ -920,6 +920,31 @@ function applyThemeVisuals() {
   });
 }
 
+function applyCustomColorEditor() {
+  const theme = THEMES.find((th) => th.id === state.themeId) || THEMES[0];
+  
+  const customBg = document.getElementById("inpBgColor")?.value || theme.ui.bg;
+  const customRoadMaj = document.getElementById("inpRoadMajor")?.value || theme.map.roads.major;
+  const customRoadMin = document.getElementById("inpRoadMinor")?.value || theme.map.roads.minor_low;
+  const customWater = document.getElementById("inpWaterColor")?.value || theme.map.water;
+  const customText = document.getElementById("inpTextColor")?.value || theme.ui.text;
+
+  // Create a customized clone of the theme
+  const customTheme = JSON.parse(JSON.stringify(theme));
+  customTheme.ui.bg = customBg;
+  customTheme.ui.text = customText;
+  customTheme.map.land = customBg;
+  customTheme.map.water = customWater;
+  customTheme.map.roads.major = customRoadMaj;
+  customTheme.map.roads.minor_high = customRoadMaj;
+  customTheme.map.roads.minor_mid = customRoadMin;
+  customTheme.map.roads.minor_low = customRoadMin;
+
+  applyTheme(customTheme);
+  applyThemeVisuals();
+  toast(state.lang === "ar" ? "تم تطبيق الألوان المخصصة" : "Custom colors applied");
+}
+
 function initMapEngine() {
   // Register RTL text plugin through MapLibre's own loader.
   // NOTE: the plugin must NOT be added as a standalone <script> tag — it calls
@@ -1124,6 +1149,25 @@ function switchTheme(themeId) {
   const lblTintVal = document.getElementById("lblTintVal");
   if (inpTint) inpTint.value = theme.ui.bg;
   if (lblTintVal) lblTintVal.textContent = theme.ui.bg;
+
+  // Sync color editor inputs with theme palette
+  const inpBgColor = document.getElementById("inpBgColor");
+  const inpRoadMajor = document.getElementById("inpRoadMajor");
+  const inpRoadMinor = document.getElementById("inpRoadMinor");
+  const inpWaterColor = document.getElementById("inpWaterColor");
+  const inpTextColor = document.getElementById("inpTextColor");
+
+  const bgVal = theme.map?.land || theme.ui.bg;
+  const roadMajVal = theme.map?.roads?.major || theme.ui.text;
+  const roadMinVal = theme.map?.roads?.minor_low || roadMajVal;
+  const waterVal = theme.map?.water || "#a8c4c4";
+  const textVal = theme.ui.text;
+
+  if (inpBgColor) { inpBgColor.value = bgVal; if (inpBgColor.nextElementSibling) inpBgColor.nextElementSibling.textContent = bgVal; }
+  if (inpRoadMajor) { inpRoadMajor.value = roadMajVal; if (inpRoadMajor.nextElementSibling) inpRoadMajor.nextElementSibling.textContent = roadMajVal; }
+  if (inpRoadMinor) { inpRoadMinor.value = roadMinVal; if (inpRoadMinor.nextElementSibling) inpRoadMinor.nextElementSibling.textContent = roadMinVal; }
+  if (inpWaterColor) { inpWaterColor.value = waterVal; if (inpWaterColor.nextElementSibling) inpWaterColor.nextElementSibling.textContent = waterVal; }
+  if (inpTextColor) { inpTextColor.value = textVal; if (inpTextColor.nextElementSibling) inpTextColor.nextElementSibling.textContent = textVal; }
 
   applyTheme(theme);
   updateMetaDisplay();
@@ -1993,30 +2037,22 @@ function wireEventListeners() {
   });
 
   // Color Editor Controls
-  document.getElementById("inpBgColor")?.addEventListener("input", (e) => {
-    applyThemeVisuals();
-    const val = document.getElementById("color-bg-value");
-    if (val) val.textContent = e.target.value;
-  });
-  document.getElementById("inpRoadMajor")?.addEventListener("input", (e) => {
-    applyThemeVisuals();
-    const val = document.getElementById("color-road-major-value");
-    if (val) val.textContent = e.target.value;
-  });
-  document.getElementById("inpRoadMinor")?.addEventListener("input", (e) => {
-    applyThemeVisuals();
-    const val = document.getElementById("color-road-minor-value");
-    if (val) val.textContent = e.target.value;
-  });
-  document.getElementById("inpWaterColor")?.addEventListener("input", (e) => {
-    applyThemeVisuals();
-    const val = document.getElementById("color-water-value");
-    if (val) val.textContent = e.target.value;
-  });
-  document.getElementById("inpTextColor")?.addEventListener("input", (e) => {
-    applyThemeVisuals();
-    const val = document.getElementById("color-text-value");
-    if (val) val.textContent = e.target.value;
+  document.getElementById("applyColors")?.addEventListener("click", applyCustomColorEditor);
+
+  ["inpBgColor", "inpRoadMajor", "inpRoadMinor", "inpWaterColor", "inpTextColor"].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.addEventListener("input", (e) => {
+        const valSpan = input.nextElementSibling;
+        if (valSpan && valSpan.classList.contains("color-value")) {
+          valSpan.textContent = e.target.value;
+        }
+        applyThemeVisuals();
+      });
+      input.addEventListener("change", () => {
+        applyCustomColorEditor();
+      });
+    }
   });
 
   // Typography Controls
