@@ -862,7 +862,7 @@ function applyThemeVisuals() {
   const theme = THEMES.find((th) => th.id === state.themeId) || THEMES[0];
   const mapCanvas = document.getElementById("map");
   const tintEl = document.getElementById("mapTint");
-  const posterEl = document.getElementById("poster");
+  const posterEl = document.getElementById("poster") || document.querySelector(".poster");
   const posterText = document.getElementById("posterText");
 
   // Apply custom colors from color editor if enabled
@@ -1562,7 +1562,7 @@ function applyOverlayLayer() {
 function applyLayout(layoutId) {
   state.layoutId = layoutId;
   const lay = LAYOUTS.find((l) => l.id === layoutId) || LAYOUTS[0];
-  const posterEl = document.getElementById("poster");
+  const posterEl = document.getElementById("poster") || document.querySelector(".poster");
   if (!posterEl) return;
 
   // Clear inline pixel dimensions so CSS responsive max-height/aspect-ratio works
@@ -1595,8 +1595,11 @@ function updateMetaDisplay() {
 // 11. High-Resolution Poster Export
 // ==========================================
 async function exportPosterImage() {
-  const posterEl = document.getElementById("poster");
-  if (!posterEl) return;
+  const posterEl = document.getElementById("poster") || document.querySelector(".poster");
+  if (!posterEl) {
+    toast(t("toastExportErr"));
+    return;
+  }
 
   toast(t("toastExportStart"));
   const btn = document.getElementById("btnExport");
@@ -1680,12 +1683,33 @@ async function exportPosterImage() {
     const ext = fmt === "jpeg" ? "jpg" : "png";
     const fileName = `terraink_${cleanCity}_${state.layoutId}_${Date.now()}.${ext}`;
 
-    const link = document.createElement("a");
-    link.download = fileName;
-    link.href = canvas.toDataURL(mimeType, 0.95);
-    link.click();
+    const triggerDownload = (downloadUrl) => {
+      const link = document.createElement("a");
+      link.style.display = "none";
+      link.href = downloadUrl;
+      link.download = fileName;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 300);
+      toast(t("toastExportDone"));
+    };
 
-    toast(t("toastExportDone"));
+    if (canvas.toBlob) {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const blobUrl = URL.createObjectURL(blob);
+          triggerDownload(blobUrl);
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+        } else {
+          triggerDownload(canvas.toDataURL(mimeType, 0.95));
+        }
+      }, mimeType, 0.95);
+    } else {
+      triggerDownload(canvas.toDataURL(mimeType, 0.95));
+    }
   } catch (err) {
     console.error("Download trigger failure:", err);
     toast(t("toastExportErr"));
@@ -2303,7 +2327,7 @@ function wireEventListeners() {
     }
   });
   document.getElementById("btnFull")?.addEventListener("click", () => {
-    const poster = document.getElementById("poster");
+    const poster = document.getElementById("poster") || document.querySelector(".poster");
     if (!poster) return;
     if (document.fullscreenElement) {
       document.exitFullscreen();
