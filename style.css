@@ -1184,22 +1184,26 @@ input[type="color"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 32px;
   box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
 }
 
-/* Responsive Poster Frame - ALWAYS 100% visible */
+/* Responsive Poster Frame - ALWAYS 100% visible & Perfectly Centered */
 .poster {
   position: relative;
-  height: 100%;
-  max-height: calc(100vh - var(--header-height) - 48px);
-  max-width: calc(100% - 48px);
-  aspect-ratio: var(--poster-ratio);
   width: auto;
+  height: auto;
+  max-width: min(100%, calc(100% - 32px));
+  max-height: min(100%, calc(100% - 32px));
+  aspect-ratio: var(--poster-ratio);
+  margin: auto;
   box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   overflow: hidden;
   background: #ffffff;
+  display: block;
 }
 
 /* Map Wrap fills entire poster */
@@ -1216,7 +1220,7 @@ input[type="color"] {
   inset: 0;
   width: 100% !important;
   height: 100% !important;
-  min-height: 400px; /* Fallback minimum height */
+  min-height: 0;
   z-index: 1;
 }
 
@@ -1422,22 +1426,25 @@ input[type="color"] {
   font-size: 16px;
 }
 
-/* Floating Toolbar */
+/* Floating Toolbar - Positioned in the corner, NEVER obscures poster center */
 .floating-toolbar {
   position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 30px;
-  padding: 5px 8px;
+  top: 20px;
+  inset-inline-end: 20px;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 6px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 4px;
   z-index: 28;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(168, 85, 247, 0.2);
 }
 
 .tool-btn {
@@ -1446,25 +1453,25 @@ input[type="color"] {
   color: #e2e8f0;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
 }
 
 .tool-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(168, 85, 247, 0.2);
   color: #ffffff;
 }
 
 .tool-sep {
-  width: 1px;
-  height: 18px;
+  width: 18px;
+  height: 1px;
   background: rgba(255, 255, 255, 0.15);
-  margin: 0 4px;
+  margin: 3px 0;
 }
 
 /* Toast Notification */
@@ -1620,29 +1627,34 @@ input[type="color"] {
   }
 
   .poster-viewport {
-    padding: 10px;
+    padding: 12px;
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .poster {
-    max-height: calc(100% - 70px);
+    max-height: calc(100% - 64px);
     max-width: calc(100% - 16px);
     border-radius: 6px;
+    margin: auto;
   }
 
-  /* Floating Map Toolbar repositioned for thumb reach */
+  /* Floating Map Toolbar repositioned to top corner - never obscures poster center */
   .floating-toolbar {
-    top: 12px;
-    inset-inline-end: 12px;
+    top: 14px;
+    inset-inline-end: 14px;
     bottom: auto;
     left: auto;
     transform: none;
     flex-direction: column;
     padding: 4px;
     gap: 4px;
-    border-radius: 20px;
-    background: rgba(15, 23, 42, 0.88);
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.9);
   }
 
   .tool-btn {
