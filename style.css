@@ -1193,17 +1193,18 @@ input[type="color"] {
 /* Responsive Poster Frame - ALWAYS 100% visible & Perfectly Centered */
 .poster {
   position: relative;
-  width: auto;
-  height: auto;
-  max-width: min(100%, calc(100% - 32px));
-  max-height: min(100%, calc(100% - 32px));
+  width: 100%;
+  height: 100%;
+  max-height: calc(100vh - var(--header-height) - 48px);
+  max-width: calc((100vh - var(--header-height) - 48px) * var(--poster-ratio));
   aspect-ratio: var(--poster-ratio);
   margin: auto;
   box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   overflow: hidden;
   background: #ffffff;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Map Wrap fills entire poster */
@@ -1637,8 +1638,11 @@ input[type="color"] {
   }
 
   .poster {
-    max-height: calc(100% - 64px);
-    max-width: calc(100% - 16px);
+    width: 100%;
+    height: 100%;
+    max-height: calc(100% - 16px);
+    max-width: calc((100% - 16px) * var(--poster-ratio));
+    aspect-ratio: var(--poster-ratio);
     border-radius: 6px;
     margin: auto;
   }
