@@ -2008,10 +2008,82 @@ function setLanguage(lang) {
   populateUI();
   renderPosterText();
   updateMetaDisplay();
+
+  const drawerTitle = document.getElementById("drawerTitle");
+  if (drawerTitle) {
+    const isCollapsed = document.getElementById("sidebar")?.classList.contains("mobile-collapsed");
+    drawerTitle.textContent = isCollapsed
+      ? (lang === "ar" ? "لوحة التحكم (مغلقة)" : "Controls (Collapsed)")
+      : (lang === "ar" ? "لوحة التحكم والتخصيص" : "Customize Poster");
+  }
+  const mvtText = document.getElementById("mvtText");
+  if (mvtText) {
+    const isCollapsed = document.getElementById("sidebar")?.classList.contains("mobile-collapsed");
+    mvtText.textContent = isCollapsed
+      ? (lang === "ar" ? "خيارات التصميم" : "Customize")
+      : (lang === "ar" ? "عرض الملصق" : "View Poster");
+  }
 }
 
 function toggleLanguage() {
   setLanguage(state.lang === "ar" ? "en" : "ar");
+}
+
+function initMobileInteractions() {
+  const sidebar = document.getElementById("sidebar");
+  const drawerHandle = document.getElementById("mobileDrawerHandle");
+  const toggleBtn = document.getElementById("btnToggleDrawer");
+  const mobileViewToggle = document.getElementById("btnMobileViewToggle");
+  const mvtText = document.getElementById("mvtText");
+  const toggleIcon = document.querySelector(".drawer-toggle-icon");
+  const drawerTitle = document.getElementById("drawerTitle");
+
+  if (!sidebar) return;
+
+  function updateMobileLabels(isCollapsed) {
+    const isAr = state.lang === "ar";
+    if (mvtText) {
+      mvtText.textContent = isCollapsed 
+        ? (isAr ? "خيارات التصميم" : "Customize")
+        : (isAr ? "عرض الملصق" : "View Poster");
+    }
+    if (drawerTitle) {
+      drawerTitle.textContent = isCollapsed
+        ? (isAr ? "لوحة التحكم (مغلقة)" : "Controls (Collapsed)")
+        : (isAr ? "لوحة التحكم والتخصيص" : "Customize Poster");
+    }
+    if (toggleIcon) {
+      toggleIcon.textContent = isCollapsed ? "▲" : "▼";
+    }
+  }
+
+  function toggleMobilePanel() {
+    const isCollapsed = sidebar.classList.toggle("mobile-collapsed");
+    updateMobileLabels(isCollapsed);
+    setTimeout(() => {
+      if (state.map) state.map.resize();
+    }, 360);
+  }
+
+  drawerHandle?.addEventListener("click", toggleMobilePanel);
+  toggleBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMobilePanel();
+  });
+  mobileViewToggle?.addEventListener("click", toggleMobilePanel);
+
+  // When tapping a tab on mobile, expand if currently collapsed
+  document.querySelectorAll(".sidebar-tabs .tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.innerWidth <= 768 && sidebar.classList.contains("mobile-collapsed")) {
+        sidebar.classList.remove("mobile-collapsed");
+        updateMobileLabels(false);
+        setTimeout(() => {
+          if (state.map) state.map.resize();
+        }, 360);
+      }
+    });
+  });
 }
 
 // ==========================================
@@ -2340,6 +2412,9 @@ function wireEventListeners() {
   window.addEventListener("resize", () => {
     if (state.map) state.map.resize();
   });
+
+  // Mobile Drawer & Switcher Interactions
+  initMobileInteractions();
   
   // ==========================================
   // Enhanced Interactive Animations

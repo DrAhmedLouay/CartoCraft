@@ -2,7 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
 <title>CartoCraft كارتوكرافت | صانع ملصقات الخرائط الكارتوغرافية</title>
 <meta name="description" content="صمم ملصقات وخلفيات خرائط مخصصة وعالية الدقة لأي مدينة في العالم باستخدام بيانات OpenStreetMap">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,6 +53,17 @@
   <div class="app-body">
     <!-- Sidebar Controls -->
     <aside class="app-sidebar" id="sidebar">
+      <!-- Mobile Drawer Handle & Toggle Bar -->
+      <div class="mobile-drawer-handle" id="mobileDrawerHandle" title="سحب أو نقر لتغيير الحجم">
+        <div class="drawer-pill"></div>
+        <div class="drawer-header-row">
+          <span class="drawer-title" id="drawerTitle">لوحة التحكم والتخصيص</span>
+          <button class="drawer-toggle-btn" id="btnToggleDrawer" aria-label="Toggle Panel">
+            <span class="drawer-toggle-icon">▼</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Tabs Navigation -->
       <nav class="sidebar-tabs" id="sidebarTabs">
         <button class="tab-btn active" data-tab="location">
@@ -507,6 +522,12 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 3h-3a2 2 0 0 0-2 2v3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
         </button>
       </div>
+
+      <!-- Mobile Floating View Switcher -->
+      <button class="mobile-view-toggle glass" id="btnMobileViewToggle" title="تبديل العرض بين الخريطة والخيارات">
+        <span class="mvt-icon">⚙️</span>
+        <span class="mvt-text" id="mvtText">خيارات التصميم</span>
+      </button>
     </main>
   </div>
 </div>
