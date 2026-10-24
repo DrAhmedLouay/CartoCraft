@@ -1565,13 +1565,20 @@ function applyLayout(layoutId) {
   const posterEl = document.getElementById("poster") || document.querySelector(".poster");
   if (!posterEl) return;
 
-  // Clear inline pixel dimensions so CSS responsive max-height/aspect-ratio works
-  posterEl.style.width = "";
-  posterEl.style.height = "";
-  posterEl.style.setProperty("--poster-ratio", (lay.w / lay.h).toString());
+  const ratio = lay.w / lay.h;
+  posterEl.style.setProperty("--poster-ratio", ratio.toString());
+  posterEl.style.aspectRatio = ratio.toString();
+
+  if (ratio > 1) {
+    posterEl.style.width = "100%";
+    posterEl.style.height = "auto";
+  } else {
+    posterEl.style.width = "auto";
+    posterEl.style.height = "100%";
+  }
 
   if (state.map) {
-    setTimeout(() => state.map.resize(), 60);
+    setTimeout(() => state.map.resize(), 80);
   }
 }
 
